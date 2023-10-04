@@ -1,0 +1,341 @@
+{
+	"info": {
+		"_postman_id": "4a70d18b-adc4-4eab-8b1e-1295f9155b8d",
+		"name": "e-commerce-event-driven-dmarcob",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "18057779"
+	},
+	"item": [
+		{
+			"name": "crear prenda",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"referencia\": \"{{PRENDA}}\",\n    \"precio\": 12.50,\n    \"categorias\":[\"Mujer\", \"Hombre\"]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{ENVIADOR-PRENDAS}}/prendas",
+					"host": [
+						"{{ENVIADOR-PRENDAS}}"
+					],
+					"path": [
+						"prendas"
+					],
+					"query": [
+						{
+							"key": "referencia",
+							"value": "S123456789",
+							"disabled": true
+						},
+						{
+							"key": "precio",
+							"value": "12.00",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "crear promocion",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"nombre\": \"{{PROMOCION}}\",\n    \"descuento\": 5.00\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{ENVIADOR-PROMOCIONES}}/promociones",
+					"host": [
+						"{{ENVIADOR-PROMOCIONES}}"
+					],
+					"path": [
+						"promociones"
+					],
+					"query": [
+						{
+							"key": "referencia",
+							"value": "S123456789",
+							"disabled": true
+						},
+						{
+							"key": "precio",
+							"value": "12.00",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "eliminar prenda",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{ENVIADOR-PRENDAS}}/prendas/{{PRENDA}}",
+					"host": [
+						"{{ENVIADOR-PRENDAS}}"
+					],
+					"path": [
+						"prendas",
+						"{{PRENDA}}"
+					],
+					"query": [
+						{
+							"key": "referencia",
+							"value": "S123456789",
+							"disabled": true
+						},
+						{
+							"key": "precio",
+							"value": "12.00",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "eliminar promocion",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"referencia\": \"S123456789\",\n    \"precio\": 12.00\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{ENVIADOR-PROMOCIONES}}/promociones/{{PROMOCION_CODIFICADO_PARA_URL}}",
+					"host": [
+						"{{ENVIADOR-PROMOCIONES}}"
+					],
+					"path": [
+						"promociones",
+						"{{PROMOCION_CODIFICADO_PARA_URL}}"
+					],
+					"query": [
+						{
+							"key": "referencia",
+							"value": "S123456789",
+							"disabled": true
+						},
+						{
+							"key": "precio",
+							"value": "12.00",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "aplicar promocion",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{APLICADOR-PROMOCIONES}}/promociones/aplicar?promocion={{PROMOCION_CODIFICADO_PARA_URL}}&prenda={{PRENDA}}",
+					"host": [
+						"{{APLICADOR-PROMOCIONES}}"
+					],
+					"path": [
+						"promociones",
+						"aplicar"
+					],
+					"query": [
+						{
+							"key": "referencia",
+							"value": "S123456789",
+							"disabled": true
+						},
+						{
+							"key": "precio",
+							"value": "12.00",
+							"disabled": true
+						},
+						{
+							"key": "promocion",
+							"value": "{{PROMOCION_CODIFICADO_PARA_URL}}"
+						},
+						{
+							"key": "prenda",
+							"value": "{{PRENDA}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "desaplicar promocion",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"referencia\": \"S123456789\",\n    \"precio\": 12.00\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{APLICADOR-PROMOCIONES}}/promociones/desaplicar?promocion={{PROMOCION_CODIFICADO_PARA_URL}}&prenda={{PRENDA}}",
+					"host": [
+						"{{APLICADOR-PROMOCIONES}}"
+					],
+					"path": [
+						"promociones",
+						"desaplicar"
+					],
+					"query": [
+						{
+							"key": "referencia",
+							"value": "S123456789",
+							"disabled": true
+						},
+						{
+							"key": "precio",
+							"value": "12.00",
+							"disabled": true
+						},
+						{
+							"key": "promocion",
+							"value": "{{PROMOCION_CODIFICADO_PARA_URL}}"
+						},
+						{
+							"key": "prenda",
+							"value": "{{PRENDA}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "listar todas las prendas",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"referencia\": \"S123456789\",\n    \"precio\": 12.00\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{CONSULTADOR-PRENDAS}}/prendas",
+					"host": [
+						"{{CONSULTADOR-PRENDAS}}"
+					],
+					"path": [
+						"prendas"
+					],
+					"query": [
+						{
+							"key": "referencia",
+							"value": "S123456789",
+							"disabled": true
+						},
+						{
+							"key": "precio",
+							"value": "12.00",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "listar prenda",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"referencia\": \"S123456789\",\n    \"precio\": 12.00\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{CONSULTADOR-PRENDAS}}/prendas/{{PRENDA}}",
+					"host": [
+						"{{CONSULTADOR-PRENDAS}}"
+					],
+					"path": [
+						"prendas",
+						"{{PRENDA}}"
+					],
+					"query": [
+						{
+							"key": "referencia",
+							"value": "S123456789",
+							"disabled": true
+						},
+						{
+							"key": "precio",
+							"value": "12.00",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
