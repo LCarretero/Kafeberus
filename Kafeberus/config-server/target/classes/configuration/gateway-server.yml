@@ -1,0 +1,18 @@
+server:
+  port: 9000
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: user
+          uri: lb://user
+          predicates:
+            - Path=/user/**
+        - id: pizzaRead
+          uri: lb://pizzaRead
+          predicates:
+            - Path=/pizza/read/**
+        - id: pizzaWrite
+          uri: lb://pizzaWrite
+          predicates:
+            - Path=/pizza/write/**
