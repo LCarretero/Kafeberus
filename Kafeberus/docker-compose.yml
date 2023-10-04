@@ -1,118 +1,39 @@
 version: '1'
 services:
-  zookeeper:
-    image: library/zookeeper:3.7.0
-    ports:
-      - "2181:2181"
+  products_db:
+    container_name: products
+    image: postgres
     environment:
-      ZOOKEEPER_CLIENT_PORT: 2181
-      ZOOKEEPER_TICK_TIME: 2000
-
-  kafka:
-    image: wurstmeister/kafka:2.13-2.7.0
-    container_name: kafka
-    depends_on:
-      - zookeeper
-    ports:
-      - "9092:9092"
-    environment:
-      HOSTNAME_COMMAND: hostname -i | awk '{print $$1}'
-      KAFKA_HEAP_OPTS: -Xmx3G -Xms1G
-      KAFKA_BROKER_ID: 1
-      KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
-      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "false"
-      KAFKA_DELETE_TOPIC_ENABLE: "true"
-      KAFKA_CREATE_TOPICS: "prendas:3:1,promociones:3:1,prendas_promocionadas:3:1"
-      KAFKA_LISTENERS: PLAINTEXT://kafka:29092,EXTERNAL://_{HOSTNAME_COMMAND}:9092
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,EXTERNAL://localhost:9092
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: EXTERNAL:PLAINTEXT,PLAINTEXT:PLAINTEXT
-      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
-      KAFKA_DEFAULT_REPLICATION_FACTOR: 1
-      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
-      KAFKA_LOG_RETENTION_MS: -1
-      KAFKA_MESSAGE_MAX_BYTES: 10485880
-      KAFKA_NUM_PARTITIONS: 8
+      POSTGRES_USER: ${POSTGRES_PRODUCTS}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD_PRODUCTS}
+      PGDATA: /data/postgres
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-
-  schema-registry:
-    image: confluentinc/cp-schema-registry:5.3.1
-    container_name: schema-registry
+      - db:/data/products
     ports:
-      - "8084:8084"
-    environment:
-      SCHEMA_REGISTRY_HOST_NAME: schema-registry
-      SCHEMA_REGISTRY_KAFKASTORE_CONNECTION_URL: zookeeper:2181
-      SCHEMA_REGISTRY_LISTENERS: http://schema-registry:8084
-    depends_on:
-      - kafka
+      - "5332:5432"
 
-  kowl:
-    image: quay.io/cloudhut/kowl:v1.4.0
-    container_name: kowl
-    restart: on-failure
-    hostname: kowl
+  bills_db:
+    container_name: bills
+    image: postgres
+    environment:
+      POSTGRES_USER: ${POSTGRES_BILLS}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD_BILLS}
+      PGDATA: /data/bills
     volumes:
-      - ./kowl-config.yaml:/etc/kowl/config.yaml
+      - db:/data/bills
     ports:
-      - "18080:8080"
+      - "5333:5432"
+
+  users_db:
+    container_name: user
+    image: postgres
     environment:
-      KAFKA_SCHEMAREGISTRY_ENABLED: "true"
-      KAFKA_SCHEMAREGISTRY_URLS: http://schema-registry:8084
-    entrypoint: ./kowl --config.filepath=/etc/kowl/config.yaml
-    depends_on:
-      - schema-registry
-      - kafka
-
-  enviador-prendas:
-    build: ./enviador-prendas
-    container_name: enviador-prendas
-    restart: always
+      POSTGRES_USER: ${POSTGRES_USERS}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD_USERS}
+      PGDATA: /data/users
+    volumes:
+      - db:/data/user
     ports:
-      - "8085:8080"
+      - "5334:5432"
 
-  enviador-promociones:
-    build: ./enviador-promociones
-    container_name: enviador-promociones
-    restart: always
-    ports:
-      - "8086:8080"
 
-  aplicador-promociones-db:
-    image: mysql:8.0
-    ports:
-      - "3306:3306"
-    environment:
-      - "MYSQL_DATABASE=aplicador-promociones-db"
-      - "MYSQL_ROOT_PASSWORD=root"
-
-  aplicador-promociones:
-    build: ./aplicador-promociones
-    container_name: aplicador-promociones
-    restart: always
-    depends_on:
-      - aplicador-promociones-db
-    ports:
-      - "8087:8080"
-    environment:
-      - "aplicador-promociones-db=aplicador-promociones-db"
-
-  consultador-prendas-db:
-    image: mysql:8.0
-    ports:
-      - "3307:3306"
-    environment:
-      - "MYSQL_DATABASE=consultador-prendas-db"
-      - "MYSQL_ROOT_PASSWORD=root"
-
-  consultador-prendas:
-    build: ./consultador-prendas
-    container_name: consultador-prendas
-    restart: always
-    depends_on:
-      - consultador-prendas-db
-    ports:
-      - "8088:8080"
-    environment:
-      - "consultador-prendas-db=consultador-prendas-db"
