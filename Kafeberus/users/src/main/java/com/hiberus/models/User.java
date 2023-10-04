@@ -1,23 +1,22 @@
 package com.hiberus.models;
 
+
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.UUID;
 
-@Table(name = "products")
+@Table(name = "users")
 @Entity
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
-public class Product {
-    @Id
+public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Id
     private UUID id;
     private String name;
-    private short price;
+    private byte fidelity;
 }

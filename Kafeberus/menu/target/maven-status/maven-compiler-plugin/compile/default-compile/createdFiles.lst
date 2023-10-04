@@ -1,6 +1,0 @@
-com\hiberus\Main.class
-com\hiberus\models\Product.class
-com\hiberus\controllers\ProductController.class
-com\hiberus\repositories\ProductRepository.class
-com\hiberus\models\Product$ProductBuilder.class
-com\hiberus\services\ProductService.class
