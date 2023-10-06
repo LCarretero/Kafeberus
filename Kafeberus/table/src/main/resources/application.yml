@@ -1,0 +1,13 @@
+server:
+  port: 7777
+
+spring:
+  application:
+    name: kafka-tableProducer
+  kafka:
+    bootstrap-servers: localhost:9092
+    producer:
+      properties:
+        key.serializer: io.confluent.kafka.streams.serdes.avro.SpecificAvroSerializer
+        value.serializer: io.confluent.kafka.streams.serdes.avro.SpecificAvroSerializer
+        schema.registry.url: http://localhost:8081

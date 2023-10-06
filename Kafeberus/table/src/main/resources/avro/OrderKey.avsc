@@ -1,0 +1,11 @@
+{
+  "type": "record",
+  "namespace": "com.hiberus.avro",
+  "name": "OrderKey",
+  "fields": [
+    {
+      "name": "id",
+      "type": "long"
+    }
+  ]
+}

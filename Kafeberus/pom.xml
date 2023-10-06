@@ -10,11 +10,11 @@
     <modules>
         <module>config-server</module>
         <module>menu</module>
-        <module>offers</module>
         <module>admin</module>
         <module>users</module>
         <module>gateway-server</module>
         <module>eureka-server</module>
+        <module>table</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>

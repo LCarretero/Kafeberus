@@ -1,0 +1,23 @@
+{
+  "type": "record",
+  "namespace": "es.curso.kafka.avro",
+  "name": "OrderValue",
+  "fields": [
+    {
+      "name": "idMesa",
+      "type": "string"
+    },
+    {
+      "name": "idProduct",
+      "type": "string"
+    },
+    {
+      "name": "idUser",
+      "type": "string"
+    },
+    {
+      "name": "timeStamp",
+      "type": "double"
+    }
+  ]
+}
