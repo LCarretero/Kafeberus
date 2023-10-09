@@ -1,6 +1,6 @@
 {
   "type": "record",
-  "namespace": "es.curso.kafka.avro",
+  "namespace": "com.hiberus.avro",
   "name": "OrderValue",
   "fields": [
     {
@@ -17,7 +17,7 @@
     },
     {
       "name": "timeStamp",
-      "type": "double"
+      "type": "string"
     }
   ]
 }
