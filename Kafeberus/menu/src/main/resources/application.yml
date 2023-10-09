@@ -1,9 +1,18 @@
 spring:
   application:
-    name: offers
-  cloud:
-    config:
-      uri: http://localhost:8888
+    name: menu
+  datasource:
+    url: jdbc:postgresql://localhost:5332/postgresUser
+    username: ${POSTGRES_PRODUCTS}
+    password: ${POSTGRES_PASSWORD_PRODUCTS}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: create
+  #cloud:
+    #config:
+      #uri: http://localhost:8888
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
