@@ -1,11 +1,11 @@
 {
   "type": "record",
   "namespace": "com.hiberus.avro",
-  "name": "PedidoKey",
+  "name": "CRUDKey",
   "fields": [
     {
-      "name": "id",
-      "type": "long"
+      "name": "verb",
+      "type": "string"
     }
   ]
 }

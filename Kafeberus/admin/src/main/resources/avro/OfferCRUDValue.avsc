@@ -1,0 +1,15 @@
+{
+  "type": "record",
+  "namespace": "com.hiberus.avro",
+  "name": "UserCRUDValue",
+  "fields": [
+    {
+      "name": "idProduct",
+      "type": "string"
+    },
+    {
+      "name": "discount",
+      "type": "int"
+    }
+  ]
+}

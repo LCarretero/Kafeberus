@@ -1,0 +1,12 @@
+{
+  "type": "record",
+  "namespace": "com.hiberus.avro",
+  "name": "CRUDKey",
+  "fields": [
+    {
+      "type": "string",
+      "name": "verb",
+      "symbols" : ["POST", "PUT", "GET", "DELETE"]
+    }
+  ]
+}

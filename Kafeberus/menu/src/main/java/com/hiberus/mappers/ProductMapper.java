@@ -1,5 +1,6 @@
 package com.hiberus.mappers;
 
+import com.hiberus.avro.ProductCRUDValue;
 import com.hiberus.dto.ProductDTO;
 import com.hiberus.models.Product;
 import org.mapstruct.Mapper;
@@ -10,4 +11,6 @@ public interface ProductMapper {
     ProductMapper INSTANCE = Mappers.getMapper(ProductMapper.class);
 
     ProductDTO mapToDTO(Product product);
+
+    Product mapAvroToModel(ProductCRUDValue avro);
 }

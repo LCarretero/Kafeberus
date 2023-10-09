@@ -1,0 +1,12 @@
+server:
+  port: 9014
+spring:
+  application:
+    name: admin
+  kafka:
+    consumer:
+      group-id: admin-crud
+  profiles:
+    active: native
+
+KEYPASS: KafkaGang

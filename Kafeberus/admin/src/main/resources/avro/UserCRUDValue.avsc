@@ -1,0 +1,19 @@
+{
+  "type": "record",
+  "namespace": "com.hiberus.avro",
+  "name": "UserCRUDValue",
+  "fields": [
+    {
+      "name": "name",
+      "type": "string"
+    },
+    {
+      "name": "price",
+      "type": "float"
+    },
+    {
+      "name": "points",
+      "type": "int"
+    }
+  ]
+}
