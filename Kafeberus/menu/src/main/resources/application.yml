@@ -1,6 +1,8 @@
 server:
   port: 9004
 spring:
+  main:
+    allow-bean-definition-overriding: true
   application:
     name: menu
   datasource:
@@ -9,18 +11,19 @@ spring:
     password: postgres123P
     driver-class-name: org.postgresql.Driver
   kafka:
-    bootstrap-servers: localhost:9092
     consumer:
-      group-id: consumer-crud-product
+      group-id: group_id
       auto-offset-reset: earliest
       properties:
+        schema.registry.url: http://localhost:8081
         key-deserializer: io.confluent.kafka.streams.serdes.avro.SpecificAvroDeserializer
         value-deserializer: io.confluent.kafka.streams.serdes.avro.SpecificAvroDeserializer
-        schema.registry.url: http://localhost:8081
 
     producer:
-      key-serializer: io.confluent.kafka.streams.serdes.avro.SpecificAvroSerializer
-      value-serializer: io.confluent.kafka.streams.serdes.avro.SpecificAvroSerializer
+      properties:
+        key-serializer: io.confluent.kafka.streams.serdes.avro.SpecificAvroSerializer
+        value-serializer: io.confluent.kafka.streams.serdes.avro.SpecificAvroSerializer
+        schema.registry.url: http://localhost:8081
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:

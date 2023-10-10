@@ -8,27 +8,25 @@ import com.hiberus.exceptions.ProductNotFoundException;
 import com.hiberus.mappers.ProductMapper;
 import com.hiberus.models.Product;
 import com.hiberus.repository.ProductRepository;
-import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
-import java.util.UUID;
 
-import static org.reflections.Reflections.log;
-
+@Slf4j
 @Service
-@AllArgsConstructor
 public class ProductService {
 
-    @Autowired
-    private ProductRepository productRepository;
+    private final ProductRepository productRepository;
+
+    public ProductService(ProductRepository productRepository) {
+        this.productRepository = productRepository;
+    }
 
     @KafkaListener(topics = "create-product")
     public void consumer(ConsumerRecord<CRUDKey, ProductCRUDValue> crudProduct) throws CrudBadVerbException {
-        assert log != null;
         log.info("Tópic: create-product");
         log.info("key: {}", crudProduct.key());
         log.info("Headers: {}", crudProduct.headers());
@@ -62,8 +60,8 @@ public class ProductService {
         productRepository.save(product);
     }
 
-    public ProductDTO getProduct(UUID id) throws ProductNotFoundException {
-        Optional<Product> productFromDB = productRepository.findById(id);
+    public ProductDTO getProduct(String name) throws ProductNotFoundException {
+        Optional<Product> productFromDB = productRepository.findByName(name);
 
         if (productFromDB.isEmpty()) {
             throw new ProductNotFoundException();
