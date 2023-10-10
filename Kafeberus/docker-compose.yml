@@ -2,12 +2,13 @@ version: '1'
 services:
 
   products_db:
-    container_name: products
+    container_name: "products"
     image: postgres
     environment:
       POSTGRES_USER: ${POSTGRES_PRODUCTS}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD_PRODUCTS}
       PGDATA: /data/postgres
+      POSTGRES_DB: postgresProducts
     volumes:
       - /data/products:/var/lib/postgresql/data
     ports:
@@ -19,6 +20,7 @@ services:
     environment:
       POSTGRES_USER: ${POSTGRES_BILLS}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD_BILLS}
+      POSTGRES_DB: postgresBills
       PGDATA: /data/bills
     volumes:
       - /data/bills:/var/lib/postgresql/data
@@ -31,7 +33,9 @@ services:
     environment:
       POSTGRES_USER: ${POSTGRES_USERS}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD_USERS}
+      POSTGRES_DB: postgresUser
       PGDATA: /data/users
+
     volumes:
       - /data/user:/var/lib/postgresql/data
     ports:
@@ -84,6 +88,7 @@ services:
       KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
       KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
       KAFKA_DELETE_TOPIC_ENABLE: "true"
+      KAFKA_CREATE_TOPICS: ${TOPIC_CRUD_PRODUCTS},${TOPIC_MESA}
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
       KAFKA_METRIC_REPORTERS: io.confluent.metrics.reporter.ConfluentMetricsReporter

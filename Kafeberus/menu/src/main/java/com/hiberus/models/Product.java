@@ -19,5 +19,5 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
     private String name;
-    private short price;
+    private float price;
 }

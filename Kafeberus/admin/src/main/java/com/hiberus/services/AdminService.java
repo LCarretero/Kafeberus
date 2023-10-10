@@ -26,7 +26,8 @@ public class AdminService {
             throw new UnauthorizedException();
         if (!validProduct(product))
             throw new ProductBadRequestException();
-        sendToProductTopic(product, verb.toString().toUpperCase());
+        String action = verb.toString().toUpperCase();
+        sendToProductTopic(product, action);
         return ProductCRUDMapper.INSTANCE.mapToDto(product);
     }
 

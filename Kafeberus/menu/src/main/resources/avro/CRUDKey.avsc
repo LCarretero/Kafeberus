@@ -4,9 +4,8 @@
   "name": "CRUDKey",
   "fields": [
     {
-      "type": "string",
       "name": "verb",
-      "symbols" : ["POST", "PUT", "GET", "DELETE"]
+      "type": "string"
     }
   ]
 }

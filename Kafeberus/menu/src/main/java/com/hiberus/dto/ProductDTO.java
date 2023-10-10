@@ -1,4 +1,5 @@
 package com.hiberus.dto;
 
-public class ProductDTO {
+public record ProductDTO(String name, Float price) {
+
 }

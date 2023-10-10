@@ -11,6 +11,4 @@ public interface ProductMapper {
     ProductMapper INSTANCE = Mappers.getMapper(ProductMapper.class);
 
     ProductDTO mapToDTO(Product product);
-
-    Product mapAvroToModel(ProductCRUDValue avro);
 }

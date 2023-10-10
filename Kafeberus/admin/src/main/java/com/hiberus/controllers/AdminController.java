@@ -29,10 +29,10 @@ public class AdminController {
         }
     }
 
-    @DeleteMapping ("/product/delete")
-    public ResponseEntity<ProductDTO> deleteProduct(@RequestHeader(name = "Authorization") String Authorization, @RequestBody ProductCRUDValue product) {
+    @DeleteMapping("/product/delete")
+    public ResponseEntity<ProductDTO> deleteProduct(@RequestHeader(name = "Authorization") String Authorization, @RequestBody String name) {
         try {
-            return ResponseEntity.ok(adminService.crudOperation(Authorization, product, DbbVerbs.DELETE));
+            return ResponseEntity.ok(adminService.crudOperation(Authorization, ProductCRUDValue.newBuilder().setName(name).build(), DbbVerbs.DELETE));
         } catch (UnauthorizedException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         } catch (ProductBadRequestException e) {

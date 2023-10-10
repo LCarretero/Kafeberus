@@ -1,18 +1,30 @@
+server:
+  port: 9004
 spring:
   application:
     name: menu
   datasource:
-    url: jdbc:postgresql://localhost:5332/postgresUser
-    username: ${POSTGRES_PRODUCTS}
-    password: ${POSTGRES_PASSWORD_PRODUCTS}
+    url: jdbc:postgresql://localhost:5332/postgresProducts
+    username: Productberus
+    password: postgres123P
     driver-class-name: org.postgresql.Driver
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: consumer-crud-product
+      auto-offset-reset: earliest
+      properties:
+        key-deserializer: io.confluent.kafka.streams.serdes.avro.SpecificAvroDeserializer
+        value-deserializer: io.confluent.kafka.streams.serdes.avro.SpecificAvroDeserializer
+        schema.registry.url: http://localhost:8081
+
+    producer:
+      key-serializer: io.confluent.kafka.streams.serdes.avro.SpecificAvroSerializer
+      value-serializer: io.confluent.kafka.streams.serdes.avro.SpecificAvroSerializer
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
       ddl-auto: create
-  #cloud:
-    #config:
-      #uri: http://localhost:8888
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
