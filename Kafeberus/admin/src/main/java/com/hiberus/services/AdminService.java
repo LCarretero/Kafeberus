@@ -21,8 +21,8 @@ public class AdminService {
     @Value("${KEYPASS}")
     private String KEYPASS;
 
-    public ProductDTO crudOperation(String auth, ProductCRUDValue product, DbbVerbs verb) throws UnauthorizedException, ProductBadRequestException {
-        if (!authorized(auth))
+    public ProductDTO crudOperation(String Authorization, ProductCRUDValue product, DbbVerbs verb) throws UnauthorizedException, ProductBadRequestException {
+        if (!authorized(Authorization))
             throw new UnauthorizedException();
         if (!validProduct(product))
             throw new ProductBadRequestException();
@@ -48,7 +48,7 @@ public class AdminService {
         return name != null && !name.isEmpty() && !name.matches(".*\\d.*");
     }
 
-    private boolean authorized(String auth) {
-        return KEYPASS.equals(auth);
+    private boolean authorized(String Authorization) {
+        return KEYPASS.equals(Authorization);
     }
 }

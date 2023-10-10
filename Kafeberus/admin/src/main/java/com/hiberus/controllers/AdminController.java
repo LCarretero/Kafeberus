@@ -19,9 +19,9 @@ public class AdminController {
     private AdminService adminService;
 
     @PostMapping("/product/create")
-    public ResponseEntity<ProductDTO> createProduct(@RequestHeader(name = "auth") String auth, @RequestBody ProductCRUDValue product) {
+    public ResponseEntity<ProductDTO> createProduct(@RequestHeader(name = "Authorization") String Authorization, @RequestBody ProductCRUDValue product) {
         try {
-            return ResponseEntity.ok(adminService.crudOperation(auth, product, DbbVerbs.POST));
+            return ResponseEntity.ok(adminService.crudOperation(Authorization, product, DbbVerbs.POST));
         } catch (UnauthorizedException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         } catch (ProductBadRequestException e) {
@@ -30,9 +30,9 @@ public class AdminController {
     }
 
     @DeleteMapping ("/product/delete")
-    public ResponseEntity<ProductDTO> deleteProduct(@RequestHeader(name = "auth") String auth, @RequestBody ProductCRUDValue product) {
+    public ResponseEntity<ProductDTO> deleteProduct(@RequestHeader(name = "Authorization") String Authorization, @RequestBody ProductCRUDValue product) {
         try {
-            return ResponseEntity.ok(adminService.crudOperation(auth, product, DbbVerbs.DELETE));
+            return ResponseEntity.ok(adminService.crudOperation(Authorization, product, DbbVerbs.DELETE));
         } catch (UnauthorizedException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         } catch (ProductBadRequestException e) {
@@ -41,9 +41,9 @@ public class AdminController {
     }
 
     @PutMapping("/product/update")
-    public ResponseEntity<ProductDTO> updateProduct(@RequestHeader(name = "auth") String auth, @RequestBody ProductCRUDValue product) {
+    public ResponseEntity<ProductDTO> updateProduct(@RequestHeader(name = "Authorization") String Authorization, @RequestBody ProductCRUDValue product) {
         try {
-            return ResponseEntity.ok(adminService.crudOperation(auth, product, DbbVerbs.PUT));
+            return ResponseEntity.ok(adminService.crudOperation(Authorization, product, DbbVerbs.PUT));
         } catch (UnauthorizedException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         } catch (ProductBadRequestException e) {

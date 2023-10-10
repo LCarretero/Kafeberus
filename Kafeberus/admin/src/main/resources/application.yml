@@ -5,9 +5,11 @@ spring:
     name: admin
   kafka:
     producer:
-      key-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      properties:
+        key.serializer: io.confluent.kafka.streams.serdes.avro.SpecificAvroSerializer
+        value.serializer: io.confluent.kafka.streams.serdes.avro.SpecificAvroSerializer
+        schema.registry.url: http://localhost:8081
   profiles:
     active: native
-
 
 KEYPASS: KafkaGang
