@@ -4,9 +4,10 @@ spring:
   application:
     name: admin
   kafka:
-    consumer:
-      group-id: admin-crud
+    producer:
+      key-serializer: org.springframework.kafka.support.serializer.JsonSerializer
   profiles:
     active: native
+
 
 KEYPASS: KafkaGang

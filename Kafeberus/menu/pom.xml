@@ -21,11 +21,14 @@
         <lombok-mapstruct-binding.version>0.2.0</lombok-mapstruct-binding.version>
     </properties>
     <dependencies>
+
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
+            <version>42.6.0</version>
             <scope>runtime</scope>
         </dependency>
+
         <dependency>
             <groupId>org.springframework.kafka</groupId>
             <artifactId>spring-kafka</artifactId>
@@ -75,10 +78,12 @@
             <version>1.5.5.Final</version>
             <scope>compile</scope>
         </dependency>
+
         <dependency>
             <groupId>org.springframework.data</groupId>
             <artifactId>spring-data-jpa</artifactId>
         </dependency>
+
         <dependency>
             <groupId>jakarta.persistence</groupId>
             <artifactId>jakarta.persistence-api</artifactId>
