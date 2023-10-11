@@ -1,7 +1,5 @@
 package com.hiberus.services;
 
-import com.hiberus.avro.CRUDKey;
-import com.hiberus.avro.ProductCRUDValue;
 import com.hiberus.dto.ProductDTO;
 import com.hiberus.exceptions.CrudBadVerbException;
 import com.hiberus.exceptions.ProductNotFoundException;
@@ -25,30 +23,13 @@ public class ProductService {
         this.productRepository = productRepository;
     }
 
-    @KafkaListener(topics = "crud-product")
+    @KafkaListener(topics = "ayuda-product")
     public void consumer(ConsumerRecord<CRUDKey, ProductCRUDValue> crudProduct) throws CrudBadVerbException {
-        log.info("Tópic: create-product");
+        log.info("Tópic: crud-product");
         log.info("key: {}", crudProduct.key());
         log.info("Headers: {}", crudProduct.headers());
         log.info("Partion: {}", crudProduct.partition());
         log.info("Order: {}", crudProduct.value());
-//        String verb = crudProduct.key().getVerb();
-//        Product product = ProductMapper.INSTANCE.mapAvroToModel(crudProduct.value());
-//        switch (verb) {
-//            case "POST":
-//                Optional<Product> productFromDB = productRepository.findByName(product.getName());
-//                if(productFromDB.isPresent())
-//                    throw
-//                ;
-//            case "GET":
-//                ;
-//            case "PUT":
-//                ;
-//            case "DELETE":
-//                ;
-//            default:
-//                throw new CrudBadVerbException();
-//        }
     }
 
     private void createProduct(Product product) throws ProductNotFoundException {

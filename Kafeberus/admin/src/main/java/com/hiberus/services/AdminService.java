@@ -38,7 +38,7 @@ public class AdminService {
                 .setName(productValue.getName())
                 .setPrice(productValue.getPrice())
                 .build();
-        kafkaTemplate.send("crud-product", key, value);
+        kafkaTemplate.send("ayuda-product", key, value);
     }
 
     private boolean validProduct(ProductCRUDValue productValue) {

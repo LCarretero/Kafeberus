@@ -139,8 +139,5 @@ fabric.properties
 
 target/
 
-Kafeberus/*.env
-Kafeberus/config.env
-*.env
 Kafeberus/admin/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst
 Kafeberus/admin/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst
