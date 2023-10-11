@@ -15,16 +15,17 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
+    @Setter
+    private String name;
+    private float price;
+    private float discountedPrice;
 
     @Override
     public String toString() {
         return "Product{" +
-                "id=" + (id==null?"null":id) +
+                "id=" + (id == null ? "null" : id) +
                 ", name='" + name + '\'' +
                 ", price=" + price +
                 '}';
     }
-
-    private String name;
-    private float price;
 }

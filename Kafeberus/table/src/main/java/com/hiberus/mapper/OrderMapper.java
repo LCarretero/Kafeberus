@@ -12,6 +12,5 @@ public interface OrderMapper {
 
     OrderDTO mapToDTO(OrderValue orderValue);
 
-    @Mapping(target = "timeStamp", expression = "java(Instant.now().toString())")
     OrderValue mapToModel(OrderDTO orderDTO);
 }

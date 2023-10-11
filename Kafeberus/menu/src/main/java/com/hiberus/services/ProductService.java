@@ -1,6 +1,7 @@
 package com.hiberus.services;
 
 import com.hiberus.avro.CRUDKey;
+import com.hiberus.avro.OfferCRUDValue;
 import com.hiberus.avro.ProductCRUDValue;
 import com.hiberus.dto.ProductDTO;
 import com.hiberus.exceptions.CrudBadVerbException;
@@ -36,50 +37,82 @@ public class ProductService {
     }
 
     @KafkaListener(topics = "crud-product")
-    public void consumer(ConsumerRecord<CRUDKey, ProductCRUDValue> crudProduct) throws CrudBadVerbException, ProductNotFoundException {
+    public void productConsumer(ConsumerRecord<CRUDKey, ProductCRUDValue> crudProduct) throws CrudBadVerbException, ProductNotFoundException {
 
-        String verb = crudProduct.key().getVerb();
+        String verb = crudProduct.value().getVerb();
         Product product = ProductMapper.INSTANCE.mapToModel(crudProduct.value());
         switch (verb) {
             case "POST" -> createProduct(product);
-            case "PUT" -> updateProduct(product);
+            case "PUT" -> updateProduct(0, product);
             case "DELETE" -> deleteProduct(product.getName());
             default -> throw new CrudBadVerbException();
         }
     }
 
-    private void createProduct(Product product) {
+    @KafkaListener(topics = "crud-offer")
+    public void offerConsumer(ConsumerRecord<CRUDKey, OfferCRUDValue> crudOffer) throws CrudBadVerbException {
+        String productName = crudOffer.key().getId();
+        String verb = crudOffer.value().getVerb();
+        Product product = new Product();
+        product.setName(productName);
+        switch (verb) {
+            case "POST", "PUT" -> updateProduct(crudOffer.value().getDiscount(), product);
+            case "DELETE" -> updateProduct(0, product);
+            default -> throw new CrudBadVerbException();
+        }
+    }
 
+    private void createProduct(Product product) {
         Optional<Product> productFromDB = productRepository.findByName(product.getName());
         if (productFromDB.isPresent()) {
             log.info("Product {},already exist", productFromDB.get());
             return;
         }
-
-        productRepository.save(product);
+        Product productForDb = Product.builder()
+                .name(product.getName())
+                .price(product.getPrice())
+                .discountedPrice(product.getDiscountedPrice())
+                .build();
+        saveProduct(productForDb);
     }
 
-    private void updateProduct(Product product) {
-        Optional<Product> productFromDB = productRepository.findByName(product.getName());
+    private void updateProduct(float discount, Product product) {
+        Optional<Product> productFromDB = findByName(product.getName());
         if (productFromDB.isEmpty()) {
             errorMessage(product.getName());
             return;
         }
-
-        productRepository.save(product);
+        float newPrice = discount == 0 ? product.getPrice() : calculatePrice(discount, product.getPrice());
+        Product productToDB = Product.builder().id(productFromDB.get().getId())
+                .name(product.getName())
+                .price(product.getPrice())
+                .discountedPrice(newPrice)
+                .build();
+        saveProduct(productToDB);
     }
 
     private void deleteProduct(String name) {
-        Optional<Product> productFromDB = productRepository.findByName(name);
+        Optional<Product> productFromDB = findByName(name);
         if (productFromDB.isEmpty()) {
             errorMessage(name);
             return;
         }
-        productRepository.deleteByName(name);
+        productRepository.deleteById(productFromDB.get().getId());
     }
 
     private void errorMessage(String name) {
         log.info("Product with name{},not found", name);
     }
 
+    private Optional<Product> findByName(String name) {
+        return productRepository.findByName(name);
+    }
+
+    private void saveProduct(Product product) {
+        productRepository.save(product);
+    }
+
+    private float calculatePrice(float discount, float price) {
+        return price - (price * discount / 100);
+    }
 }

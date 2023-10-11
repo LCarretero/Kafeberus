@@ -8,26 +8,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
-import java.time.Instant;
-
 @Service
 public class OrderService {
     @Autowired
     private KafkaTemplate<OrderKey, OrderValue> kafkaTemplate;
 
-    public OrderDTO makeAnOrder(OrderValue orderValue) {
-        send(orderValue);
+    public OrderDTO makeAnOrder(int idMesa, OrderValue orderValue) {
+        send(idMesa, orderValue);
         return OrderMapper.INSTANCE.mapToDTO(orderValue);
     }
 
-    private void send(OrderValue orderValue) {
-        OrderKey key = OrderKey.newBuilder().setId(2184194).build();
+    private void send(int idMesa, OrderValue orderValue) {
+        OrderKey key = OrderKey.newBuilder().setIdMesa(idMesa).build();
 
         OrderValue value = OrderValue.newBuilder()
-                .setIdMesa(orderValue.getIdMesa())
-                .setIdProduct(orderValue.getIdProduct())
+                .setProductName(orderValue.getProductName())
                 .setIdUser(orderValue.getIdUser())
-                .setTimeStamp(Instant.now().toString())
                 .build();
 
         kafkaTemplate.send("order-by-table", key, value);

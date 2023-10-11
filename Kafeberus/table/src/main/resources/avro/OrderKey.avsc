@@ -4,7 +4,7 @@
   "name": "OrderKey",
   "fields": [
     {
-      "name": "id",
+      "name": "idMesa",
       "type": "long"
     }
   ]
