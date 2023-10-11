@@ -28,7 +28,7 @@ public class AdminController {
     }
 
     @DeleteMapping("/product/delete")
-    public ResponseEntity<ProductDTO> deleteProduct(@RequestHeader(name = "Authorization") String Authorization, @RequestBody String name) {
+    public ResponseEntity<ProductDTO> deleteProduct(@RequestHeader(name = "Authorization") String Authorization, @RequestParam(name = "name") String name) {
         try {
             return ResponseEntity.ok(adminService.crudOperation(Authorization, new ProductDTO(name, 0F), DbbVerbs.DELETE));
         } catch (UnauthorizedException e) {

@@ -15,10 +15,9 @@ import org.springframework.web.bind.annotation.RestController;
 @AllArgsConstructor
 public class ProductController {
 
-
     private ProductService productService;
 
-    @GetMapping("/getProduct")
+    @GetMapping("/getProduct/{name}")
     public ResponseEntity<ProductDTO> getProduct(@RequestParam(name = "name") String name) {
         try {
             return ResponseEntity.ok(productService.getProduct(name));

@@ -24,7 +24,7 @@ public class AdminService {
     public ProductDTO crudOperation(String Authorization, ProductDTO product, DbbVerbs verb) throws UnauthorizedException, ProductBadRequestException {
         if (!authorized(Authorization))
             throw new UnauthorizedException();
-        if (!validProduct(product))
+        if (!validName(product.name()))
             throw new ProductBadRequestException();
         String action = verb.toString().toUpperCase();
         ProductCRUDValue productCRUDValue = ProductCRUDValue.newBuilder().setName(product.name()).setPrice(product.price()).build();
@@ -41,10 +41,6 @@ public class AdminService {
                 .setPrice(productValue.getPrice())
                 .build();
         kafkaTemplate.send("crud-product", key, value);
-    }
-
-    private boolean validProduct(ProductDTO productValue) {
-        return validName(productValue.name()) && productValue.price() > 0;
     }
 
     private boolean validName(String name) {

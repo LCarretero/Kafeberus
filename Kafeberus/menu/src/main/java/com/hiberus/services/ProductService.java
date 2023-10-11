@@ -25,42 +25,6 @@ public class ProductService {
         this.productRepository = productRepository;
     }
 
-    @KafkaListener(topics = "crud-product")
-    public void consumer(ConsumerRecord<CRUDKey, ProductCRUDValue> crudProduct) {
-        var a = crudProduct.key();
-        log.info("Topic: crud-product");
-        log.info("key: {}", crudProduct.key());
-        log.info("Headers: {}", crudProduct.headers());
-        log.info("Partion: {}", crudProduct.partition());
-        log.info("Order: {}", crudProduct.value());
-//        String verb = crudProduct.key().getVerb();
-//        Product product = ProductMapper.INSTANCE.mapAvroToModel(crudProduct.value());
-//        switch (verb) {
-//            case "POST":
-//                Optional<Product> productFromDB = productRepository.findByName(product.getName());
-//                if(productFromDB.isPresent())
-//                    throw
-//                ;
-//            case "GET":
-//                ;
-//            case "PUT":
-//                ;
-//            case "DELETE":
-//                ;
-//            default:
-//                throw new CrudBadVerbException();
-//        }
-    }
-
-    private void createProduct(Product product) throws ProductNotFoundException {
-
-        Optional<Product> productFromDB = productRepository.findByName(product.getName());
-        if (productFromDB.isPresent())
-            throw new ProductNotFoundException();
-
-        productRepository.save(product);
-    }
-
     public ProductDTO getProduct(String name) throws ProductNotFoundException {
         Optional<Product> productFromDB = productRepository.findByName(name);
 
@@ -71,5 +35,51 @@ public class ProductService {
         return ProductMapper.INSTANCE.mapToDTO(productFromDB.get());
     }
 
+    @KafkaListener(topics = "crud-product")
+    public void consumer(ConsumerRecord<CRUDKey, ProductCRUDValue> crudProduct) throws CrudBadVerbException, ProductNotFoundException {
+
+        String verb = crudProduct.key().getVerb();
+        Product product = ProductMapper.INSTANCE.mapToModel(crudProduct.value());
+        switch (verb) {
+            case "POST" -> createProduct(product);
+            case "PUT" -> updateProduct(product);
+            case "DELETE" -> deleteProduct(product.getName());
+            default -> throw new CrudBadVerbException();
+        }
+    }
+
+    private void createProduct(Product product) {
+
+        Optional<Product> productFromDB = productRepository.findByName(product.getName());
+        if (productFromDB.isPresent()) {
+            log.info("Product {},already exist", productFromDB.get());
+            return;
+        }
+
+        productRepository.save(product);
+    }
+
+    private void updateProduct(Product product) {
+        Optional<Product> productFromDB = productRepository.findByName(product.getName());
+        if (productFromDB.isEmpty()) {
+            errorMessage(product.getName());
+            return;
+        }
+
+        productRepository.save(product);
+    }
+
+    private void deleteProduct(String name) {
+        Optional<Product> productFromDB = productRepository.findByName(name);
+        if (productFromDB.isEmpty()) {
+            errorMessage(name);
+            return;
+        }
+        productRepository.deleteByName(name);
+    }
+
+    private void errorMessage(String name) {
+        log.info("Product with name{},not found", name);
+    }
 
 }

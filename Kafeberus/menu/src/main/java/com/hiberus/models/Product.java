@@ -1,9 +1,6 @@
 package com.hiberus.models;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.UUID;
@@ -18,6 +15,16 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "id=" + (id==null?"null":id) +
+                ", name='" + name + '\'' +
+                ", price=" + price +
+                '}';
+    }
+
     private String name;
     private float price;
 }
