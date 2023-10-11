@@ -1,5 +1,7 @@
 package com.hiberus.services;
 
+import com.hiberus.avro.CRUDKey;
+import com.hiberus.avro.ProductCRUDValue;
 import com.hiberus.dto.ProductDTO;
 import com.hiberus.exceptions.CrudBadVerbException;
 import com.hiberus.exceptions.ProductNotFoundException;
