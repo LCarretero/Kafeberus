@@ -29,10 +29,11 @@ public class AdminOfferService {
     }
 
     private OfferCRUDValue sendToTopic(String verb, OfferDTO data) {
-        CRUDKey key = CRUDKey.newBuilder().setVerb(verb).build();
+        CRUDKey key = CRUDKey.newBuilder().setId(data.productName()).build();
         OfferCRUDValue value = OfferCRUDValue.newBuilder()
                 .setProductName(data.productName())
                 .setDiscount(data.discount())
+                .setVerb(verb)
                 .build();
         kafkaTemplate.send("crud-offer", key, value);
         return value;

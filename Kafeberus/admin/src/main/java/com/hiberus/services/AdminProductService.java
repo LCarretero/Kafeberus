@@ -32,11 +32,12 @@ public class AdminProductService {
     }
 
     private ProductCRUDValue sendToProductTopic(String verb, ProductDTO data) {
-        CRUDKey key = CRUDKey.newBuilder().setVerb(verb).build();
+        CRUDKey key = CRUDKey.newBuilder().setId(data.name()).build();
 
         ProductCRUDValue value = ProductCRUDValue.newBuilder()
                 .setName(data.name())
                 .setPrice(data.price())
+                .setVerb(verb)
                 .setDiscountedPrice(0)
                 .build();
         kafkaTemplate.send("crud-product", key, value);

@@ -4,7 +4,7 @@
   "name": "CRUDKey",
   "fields": [
     {
-      "name": "verb",
+      "name": "id",
       "type": "string"
     }
   ]

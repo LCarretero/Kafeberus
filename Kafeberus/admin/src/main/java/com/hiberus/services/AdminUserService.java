@@ -31,16 +31,17 @@ public class AdminUserService {
     }
 
     private UserCRUDValue sendToTopic(String verb, UserDTO data) {
-        CRUDKey key = CRUDKey.newBuilder().setVerb(verb).build();
-        UserCRUDValue value = UserCRUDValue.newBuilder().setName(data.name()).setPoints(data.points()).build();
-        if (DbbVerbs.PUT.toString().equals(verb))
-            value.setUuid(data.uuid());
+        CRUDKey key = CRUDKey.newBuilder().setId(data.uuid() == null ? data.name() : data.uuid()).build();
+        UserCRUDValue value = UserCRUDValue.newBuilder()
+                .setName(data.name())
+                .setPoints(data.points())
+                .setVerb(verb).build();
         kafkaTemplate.send("crud-user", key, value);
         return value;
     }
 
     private boolean validUser(UserDTO user) {
-        return validName(user.name()) && (user.points() >= 0 && user.points() <= 5);
+        return validName(user.name()) && (user.points() >= 0 && MAX_POINTS <= 5);
     }
 
     private boolean validName(String name) {

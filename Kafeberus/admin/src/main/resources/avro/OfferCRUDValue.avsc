@@ -8,6 +8,10 @@
       "type": "string"
     },
     {
+      "name": "verb",
+      "type": "string"
+    },
+    {
       "name": "discount",
       "type": "int"
     }

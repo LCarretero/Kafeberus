@@ -4,9 +4,8 @@
   "name": "UserCRUDValue",
   "fields": [
     {
-      "name": "uuid",
-      "type": "string",
-      "default": ""
+      "name": "verb",
+      "type": "string"
     },
     {
       "name": "name",
