@@ -1,10 +1,10 @@
 {
   "type": "record",
   "namespace": "com.hiberus.avro",
-  "name": "UserCRUDValue",
+  "name": "OfferCRUDValue",
   "fields": [
     {
-      "name": "idProduct",
+      "name": "productName",
       "type": "string"
     },
     {

@@ -4,16 +4,19 @@
   "name": "UserCRUDValue",
   "fields": [
     {
-      "name": "name",
-      "type": "string"
+      "name": "uuid",
+      "type": "string",
+      "default": ""
     },
     {
-      "name": "price",
-      "type": "float"
+      "name": "name",
+      "type": "string",
+      "default": ""
     },
     {
       "name": "points",
-      "type": "int"
+      "type": "int",
+      "default": 0ó
     }
   ]
 }

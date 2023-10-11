@@ -1,19 +1,18 @@
 package com.hiberus.services;
 
-import com.hiberus.Exception.ProductBadRequestException;
+import com.hiberus.Exception.BadRequestException;
 import com.hiberus.Exception.UnauthorizedException;
 import com.hiberus.avro.CRUDKey;
 import com.hiberus.avro.ProductCRUDValue;
 import com.hiberus.dto.ProductDTO;
 import com.hiberus.enums.DbbVerbs;
-import com.hiberus.mapper.ProductCRUDMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 @Service
-public class AdminService {
+public class AdminProductService {
 
     @Autowired
     private KafkaTemplate<CRUDKey, ProductCRUDValue> kafkaTemplate;
@@ -21,24 +20,23 @@ public class AdminService {
     @Value("${KEYPASS}")
     private String KEYPASS;
 
-    public ProductDTO crudOperation(String Authorization, ProductDTO product, DbbVerbs verb) throws UnauthorizedException, ProductBadRequestException {
+    public ProductDTO crudOperation(String Authorization, ProductDTO product, DbbVerbs verb) throws UnauthorizedException, BadRequestException {
         if (!authorized(Authorization))
             throw new UnauthorizedException();
         if (!validName(product.name()))
-            throw new ProductBadRequestException();
-        String action = verb.toString().toUpperCase();
-        ProductCRUDValue productCRUDValue = ProductCRUDValue.newBuilder().setName(product.name()).setPrice(product.price()).build();
+            throw new BadRequestException();
 
-        sendToProductTopic(productCRUDValue, action);
-        return ProductCRUDMapper.INSTANCE.mapToDto(productCRUDValue);
+        sendToProductTopic(verb.toString().toUpperCase(), product);
+        return product;
     }
 
-    private void sendToProductTopic(ProductCRUDValue productValue, String verb) {
+    private void sendToProductTopic(String verb, ProductDTO data) {
         CRUDKey key = CRUDKey.newBuilder().setVerb(verb).build();
 
         ProductCRUDValue value = ProductCRUDValue.newBuilder()
-                .setName(productValue.getName())
-                .setPrice(productValue.getPrice())
+                .setName(data.name())
+                .setPrice(data.price())
+                .setDiscountedPrice(0)
                 .build();
         kafkaTemplate.send("crud-product", key, value);
     }

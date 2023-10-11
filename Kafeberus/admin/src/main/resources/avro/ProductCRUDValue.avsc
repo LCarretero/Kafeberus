@@ -10,6 +10,10 @@
     {
       "name": "price",
       "type": "float"
+    },
+    {
+      "name": "discountedPrice",
+      "type": "int"
     }
   ]
 }
