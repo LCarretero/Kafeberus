@@ -6,7 +6,8 @@
     {
       "name": "idUser",
       "type": "string"
-    },{
+    },
+    {
       "name": "mapOfProducts",
       "type": {
         "type": "map",

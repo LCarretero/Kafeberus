@@ -18,6 +18,6 @@ public class OrderController {
     @PostMapping("/createOrder")
     public ResponseEntity<OrderDTO> makeAnOrder(@RequestParam(name = "idMesa") int idMesa, @RequestBody OrderDTO order) {
         OrderValue orderValue = OrderMapper.INSTANCE.mapToModel(order);
-        return ResponseEntity.ok(orderService.makeAnOrder(idMesa,orderValue));
+        return ResponseEntity.ok(orderService.makeAnOrder(idMesa, orderValue));
     }
 }

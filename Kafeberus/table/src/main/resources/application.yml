@@ -1,9 +1,8 @@
 server:
-  port: 7777
-
+  port: 9034
 spring:
   application:
-    name: kafka-tableProducer
+    name: table
   kafka:
     bootstrap-servers: localhost:9092
     producer:
@@ -11,3 +10,7 @@ spring:
         key.serializer: io.confluent.kafka.streams.serdes.avro.SpecificAvroSerializer
         value.serializer: io.confluent.kafka.streams.serdes.avro.SpecificAvroSerializer
         schema.registry.url: http://localhost:8081
+
+  config:
+    activate:
+      on-profile: default

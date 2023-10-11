@@ -138,6 +138,6 @@ fabric.properties
 .idea/caches/build_file_checksums.ser
 
 target/
-
+/Kafeberus/**/target/**
 Kafeberus/admin/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst
 Kafeberus/admin/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst

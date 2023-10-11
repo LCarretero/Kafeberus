@@ -1,10 +1,10 @@
 {
   "type": "record",
   "namespace": "com.hiberus.avro",
-  "name": "OrderKey",
+  "name": "TableKey",
   "fields": [
     {
-      "name": "idMesa",
+      "name": "idTable",
       "type": "long"
     }
   ]

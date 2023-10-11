@@ -1,7 +1,8 @@
 package com.hiberus.service;
 
-import com.hiberus.avro.OrderKey;
+
 import com.hiberus.avro.OrderValue;
+import com.hiberus.avro.TableKey;
 import com.hiberus.dto.OrderDTO;
 import com.hiberus.mapper.OrderMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +12,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class OrderService {
     @Autowired
-    private KafkaTemplate<OrderKey, OrderValue> kafkaTemplate;
+    private KafkaTemplate<TableKey, OrderValue> kafkaTemplate;
 
     public OrderDTO makeAnOrder(int idMesa, OrderValue orderValue) {
         send(idMesa, orderValue);
@@ -19,10 +20,10 @@ public class OrderService {
     }
 
     private void send(int idMesa, OrderValue orderValue) {
-        OrderKey key = OrderKey.newBuilder().setIdMesa(idMesa).build();
+        TableKey key = TableKey.newBuilder().setIdTable(idMesa).build();
 
         OrderValue value = OrderValue.newBuilder()
-                .setProductName(orderValue.getProductName())
+                .setMapOfProducts(orderValue.getMapOfProducts())
                 .setIdUser(orderValue.getIdUser())
                 .build();
 
