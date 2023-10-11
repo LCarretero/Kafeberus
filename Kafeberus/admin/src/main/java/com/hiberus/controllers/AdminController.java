@@ -18,7 +18,7 @@ public class AdminController {
     private AdminService adminService;
 
     @PostMapping("/product/create")
-    public ResponseEntity<ProductDTO> createProduct(@RequestHeader(name = "Authorization") String Authorization, @RequestBody ProductCRUDValue product) {
+    public ResponseEntity<ProductDTO> createProduct(@RequestHeader(name = "Authorization") String Authorization, @RequestBody ProductDTO product) {
         try {
             return ResponseEntity.ok(adminService.crudOperation(Authorization, product, DbbVerbs.POST));
         } catch (UnauthorizedException e) {
@@ -31,7 +31,7 @@ public class AdminController {
     @DeleteMapping("/product/delete")
     public ResponseEntity<ProductDTO> deleteProduct(@RequestHeader(name = "Authorization") String Authorization, @RequestBody String name) {
         try {
-            return ResponseEntity.ok(adminService.crudOperation(Authorization, ProductCRUDValue.newBuilder().setName(name).build(), DbbVerbs.DELETE));
+            return ResponseEntity.ok(adminService.crudOperation(Authorization, new ProductDTO(name, 0F), DbbVerbs.DELETE));
         } catch (UnauthorizedException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         } catch (ProductBadRequestException e) {
@@ -40,7 +40,7 @@ public class AdminController {
     }
 
     @PutMapping("/product/update")
-    public ResponseEntity<ProductDTO> updateProduct(@RequestHeader(name = "Authorization") String Authorization, @RequestBody ProductCRUDValue product) {
+    public ResponseEntity<ProductDTO> updateProduct(@RequestHeader(name = "Authorization") String Authorization, @RequestBody ProductDTO product) {
         try {
             return ResponseEntity.ok(adminService.crudOperation(Authorization, product, DbbVerbs.PUT));
         } catch (UnauthorizedException e) {

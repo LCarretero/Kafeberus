@@ -21,14 +21,16 @@ public class AdminService {
     @Value("${KEYPASS}")
     private String KEYPASS;
 
-    public ProductDTO crudOperation(String Authorization, ProductCRUDValue product, DbbVerbs verb) throws UnauthorizedException, ProductBadRequestException {
+    public ProductDTO crudOperation(String Authorization, ProductDTO product, DbbVerbs verb) throws UnauthorizedException, ProductBadRequestException {
         if (!authorized(Authorization))
             throw new UnauthorizedException();
         if (!validProduct(product))
             throw new ProductBadRequestException();
         String action = verb.toString().toUpperCase();
-        sendToProductTopic(product, action);
-        return ProductCRUDMapper.INSTANCE.mapToDto(product);
+        ProductCRUDValue productCRUDValue = ProductCRUDValue.newBuilder().setName(product.name()).setPrice(product.price()).build();
+
+        sendToProductTopic(productCRUDValue, action);
+        return ProductCRUDMapper.INSTANCE.mapToDto(productCRUDValue);
     }
 
     private void sendToProductTopic(ProductCRUDValue productValue, String verb) {
@@ -38,11 +40,11 @@ public class AdminService {
                 .setName(productValue.getName())
                 .setPrice(productValue.getPrice())
                 .build();
-        kafkaTemplate.send("ayuda-product", key, value);
+        kafkaTemplate.send("crud-product", key, value);
     }
 
-    private boolean validProduct(ProductCRUDValue productValue) {
-        return validName(productValue.getName()) && productValue.getPrice() > 0;
+    private boolean validProduct(ProductDTO productValue) {
+        return validName(productValue.name()) && productValue.price() > 0;
     }
 
     private boolean validName(String name) {

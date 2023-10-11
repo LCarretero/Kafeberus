@@ -11,13 +11,15 @@ spring:
     password: postgres123P
     driver-class-name: org.postgresql.Driver
   kafka:
+    bootstrap-servers: localhost:9092
+
     consumer:
       group-id: crud-product-consumer
       auto-offset-reset: earliest
       properties:
+        key-deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
+        value-deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
         schema.registry.url: http://localhost:8081
-        key-deserializer: io.confluent.kafka.streams.serdes.avro.SpecificAvroDeserializer
-        value-deserializer: io.confluent.kafka.streams.serdes.avro.SpecificAvroDeserializer
 
     producer:
       properties:
