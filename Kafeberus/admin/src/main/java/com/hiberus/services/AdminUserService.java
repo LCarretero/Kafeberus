@@ -6,6 +6,7 @@ import com.hiberus.avro.CRUDKey;
 import com.hiberus.avro.UserCRUDValue;
 import com.hiberus.dto.UserDTO;
 import com.hiberus.enums.DbbVerbs;
+import com.hiberus.mapper.UserCRUDMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -25,20 +26,21 @@ public class AdminUserService {
         if (!validUser(user))
             throw new BadRequestException();
 
-        sendToTopic(verb.toString().toUpperCase(), user);
-        return user;
+        UserCRUDValue response = sendToTopic(verb.toString().toUpperCase(), user);
+        return UserCRUDMapper.INSTANCE.mapToDto(response);
     }
 
-    private void sendToTopic(String verb, UserDTO data) {
+    private UserCRUDValue sendToTopic(String verb, UserDTO data) {
         CRUDKey key = CRUDKey.newBuilder().setVerb(verb).build();
         UserCRUDValue value = UserCRUDValue.newBuilder().setName(data.name()).setPoints(data.points()).build();
         if (DbbVerbs.PUT.toString().equals(verb))
             value.setUuid(data.uuid());
         kafkaTemplate.send("crud-user", key, value);
+        return value;
     }
 
     private boolean validUser(UserDTO user) {
-        return validName(user.name()) && (user.points() > 0 && user.points() <= 5);
+        return validName(user.name()) && (user.points() >= 0 && user.points() <= 5);
     }
 
     private boolean validName(String name) {

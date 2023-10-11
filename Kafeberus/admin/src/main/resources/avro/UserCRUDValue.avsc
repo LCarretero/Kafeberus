@@ -16,7 +16,7 @@
     {
       "name": "points",
       "type": "int",
-      "default": 0ó
+      "default": 0
     }
   ]
 }

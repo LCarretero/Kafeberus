@@ -30,7 +30,7 @@ public class AdminOfferController {
     @DeleteMapping("/delete")
     public ResponseEntity<OfferDTO> deleteOffer(@RequestHeader(name = "Authorization") String Authorization, @RequestParam(name = "name") String name) {
         try {
-            return ResponseEntity.ok(adminOfferService.crudOperation(Authorization, new OfferDTO(name, 0), DbbVerbs.DELETE));
+            return ResponseEntity.ok(adminOfferService.crudOperation(Authorization, new OfferDTO(null, name, 0), DbbVerbs.DELETE));
         } catch (UnauthorizedException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         } catch (BadRequestException e) {

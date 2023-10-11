@@ -8,7 +8,7 @@ import org.mapstruct.factory.Mappers;
 @Mapper(componentModel = "spring")
 
 public interface UserCRUDMapper {
-    public UserCRUDMapper INSTANCE = Mappers.getMapper(UserCRUDMapper.class);
+    UserCRUDMapper INSTANCE = Mappers.getMapper(UserCRUDMapper.class);
 
-    public UserDTO mapToDto(UserCRUDValue product);
+    UserDTO mapToDto(UserCRUDValue product);
 }

@@ -6,6 +6,7 @@ import com.hiberus.avro.CRUDKey;
 import com.hiberus.avro.ProductCRUDValue;
 import com.hiberus.dto.ProductDTO;
 import com.hiberus.enums.DbbVerbs;
+import com.hiberus.mapper.ProductCRUDMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -26,11 +27,11 @@ public class AdminProductService {
         if (!validName(product.name()))
             throw new BadRequestException();
 
-        sendToProductTopic(verb.toString().toUpperCase(), product);
-        return product;
+        ProductCRUDValue response = sendToProductTopic(verb.toString().toUpperCase(), product);
+        return ProductCRUDMapper.INSTANCE.mapToDto(response);
     }
 
-    private void sendToProductTopic(String verb, ProductDTO data) {
+    private ProductCRUDValue sendToProductTopic(String verb, ProductDTO data) {
         CRUDKey key = CRUDKey.newBuilder().setVerb(verb).build();
 
         ProductCRUDValue value = ProductCRUDValue.newBuilder()
@@ -39,6 +40,7 @@ public class AdminProductService {
                 .setDiscountedPrice(0)
                 .build();
         kafkaTemplate.send("crud-product", key, value);
+        return value;
     }
 
     private boolean validName(String name) {

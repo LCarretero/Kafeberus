@@ -6,6 +6,7 @@ import com.hiberus.avro.CRUDKey;
 import com.hiberus.avro.OfferCRUDValue;
 import com.hiberus.dto.OfferDTO;
 import com.hiberus.enums.DbbVerbs;
+import com.hiberus.mapper.OfferCRUDMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -23,17 +24,18 @@ public class AdminOfferService {
             throw new UnauthorizedException();
         if (!validName(offer.productName()))
             throw new BadRequestException();
-        sendToTopic(verb.toString().toUpperCase(), offer);
-        return offer;
+        OfferCRUDValue response = sendToTopic(verb.toString().toUpperCase(), offer);
+        return OfferCRUDMapper.INSTANCE.mapToDTO(response);
     }
 
-    private void sendToTopic(String verb, OfferDTO data) {
+    private OfferCRUDValue sendToTopic(String verb, OfferDTO data) {
         CRUDKey key = CRUDKey.newBuilder().setVerb(verb).build();
         OfferCRUDValue value = OfferCRUDValue.newBuilder()
                 .setProductName(data.productName())
                 .setDiscount(data.discount())
                 .build();
         kafkaTemplate.send("crud-offer", key, value);
+        return value;
     }
 
     private boolean validName(String name) {
