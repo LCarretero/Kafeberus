@@ -25,7 +25,7 @@ public class ProductService {
         this.productRepository = productRepository;
     }
 
-    @KafkaListener(topics = "create-product")
+    @KafkaListener(topics = "crud-product")
     public void consumer(ConsumerRecord<CRUDKey, ProductCRUDValue> crudProduct) throws CrudBadVerbException {
         log.info("Tópic: create-product");
         log.info("key: {}", crudProduct.key());
