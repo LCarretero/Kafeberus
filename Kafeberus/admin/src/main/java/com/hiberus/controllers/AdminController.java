@@ -2,7 +2,6 @@ package com.hiberus.controllers;
 
 import com.hiberus.Exception.ProductBadRequestException;
 import com.hiberus.Exception.UnauthorizedException;
-import com.hiberus.avro.ProductCRUDValue;
 import com.hiberus.dto.ProductDTO;
 import com.hiberus.enums.DbbVerbs;
 import com.hiberus.services.AdminService;

@@ -6,9 +6,10 @@ spring:
   kafka:
     bootstrap-servers: localhost:9092
     producer:
+      key-serializer: io.confluent.kafka.streams.serdes.avro.SpecificAvroSerializer
+      value-serializer: io.confluent.kafka.streams.serdes.avro.SpecificAvroSerializer
       properties:
-        key.serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
-        value.serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
+        specific.avro.reade: true
         schema.registry.url: http://localhost:8081
   config:
     activate:

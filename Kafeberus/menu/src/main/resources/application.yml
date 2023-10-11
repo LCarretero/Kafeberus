@@ -16,15 +16,17 @@ spring:
     consumer:
       group-id: crud-product-consumer
       auto-offset-reset: earliest
+      key-deserializer: io.confluent.kafka.streams.serdes.avro.SpecificAvroDeserializer
+      value-deserializer: io.confluent.kafka.streams.serdes.avro.SpecificAvroDeserializer
       properties:
-        key-deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
-        value-deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
+        specific.avro.reade: true
         schema.registry.url: http://localhost:8081
 
     producer:
+      key-serializer: io.confluent.kafka.streams.serdes.avro.SpecificAvroSerializer
+      value-serializer: io.confluent.kafka.streams.serdes.avro.SpecificAvroSerializer
       properties:
-        key-serializer: io.confluent.kafka.streams.serdes.avro.SpecificAvroSerializer
-        value-serializer: io.confluent.kafka.streams.serdes.avro.SpecificAvroSerializer
+        specific.avro.reade: true
         schema.registry.url: http://localhost:8081
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
