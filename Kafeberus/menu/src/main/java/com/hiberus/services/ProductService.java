@@ -38,8 +38,15 @@ public class ProductService {
         return ProductMapper.INSTANCE.mapToDTO(productFromDB.get());
     }
 
+
+    //region PRIVATE_METHODS
+    @KafkaListener(topics = "ticket-created")
+    private void productConsumer(ConsumerRecord<CRUDKey, ProductCRUDValue> crudProduct){
+
+    }
+
     @KafkaListener(topics = "crud-product")
-    public void productConsumer(ConsumerRecord<CRUDKey, ProductCRUDValue> crudProduct) throws CrudBadVerbException, ProductNotFoundException {
+    private void productConsumer(ConsumerRecord<CRUDKey, ProductCRUDValue> crudProduct) throws CrudBadVerbException {
 
         String verb = crudProduct.value().getVerb();
         Product product = ProductMapper.INSTANCE.mapToModel(crudProduct.value());
@@ -52,7 +59,7 @@ public class ProductService {
     }
 
     @KafkaListener(topics = "crud-offer")
-    public void offerConsumer(ConsumerRecord<CRUDKey, OfferCRUDValue> crudOffer) throws CrudBadVerbException {
+    private void offerConsumer(ConsumerRecord<CRUDKey, OfferCRUDValue> crudOffer) throws CrudBadVerbException {
         String productName = crudOffer.key().getId();
         String verb = crudOffer.value().getVerb();
         Product product = new Product();
@@ -117,4 +124,5 @@ public class ProductService {
     private float calculatePrice(float discount, float price) {
         return price - (price * discount / 100);
     }
+    //endregion
 }

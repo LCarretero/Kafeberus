@@ -12,6 +12,7 @@
         <module>admin</module>
         <module>users</module>
         <module>table</module>
+        <module>ticketMixbi</module>
         <module>ticket</module>
     </modules>
     <parent>

@@ -8,8 +8,8 @@ import org.springframework.kafka.annotation.EnableKafka;
 
 @EnableKafka
 @SpringBootApplication(exclude = {DataSourceAutoConfiguration.class, HibernateJpaAutoConfiguration.class})
-public class TicketApplication {
+public class TicketMixbiApplication {
     public static void main(String[] args) {
-        SpringApplication.run(TicketApplication.class, args);
+        SpringApplication.run(TicketMixbiApplication.class, args);
     }
 }
