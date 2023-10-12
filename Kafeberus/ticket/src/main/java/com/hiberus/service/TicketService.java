@@ -4,21 +4,22 @@ import com.hiberus.avro.OrderValue;
 import com.hiberus.avro.TableKey;
 import com.hiberus.dto.TicketDTO;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.kafka.clients.consumer.ConsumerRecord;
+import org.apache.kafka.streams.kstream.KStream;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.context.annotation.Bean;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.function.Consumer;
 
 @Service
 @Slf4j
 public class TicketService {
     @Autowired
     private KafkaTemplate<TableKey, OrderValue> kafkaTemplate;
-    private final Map<String, TreeMap<String, Integer>> productMap = new TreeMap<>();
+    private Map<String, TreeMap<String, Integer>> productMap = new TreeMap<>();
 
     public TicketDTO makeTicket(String userId, String idMesa) {
         TableKey key = TableKey.newBuilder().setId(idMesa).build();
@@ -29,21 +30,27 @@ public class TicketService {
                 .setIdUser(userId)
                 .build();
         kafkaTemplate.send("ticket-created", key, value);
+        productMap = new TreeMap<>();
         return new TicketDTO(idMesa, userId);
     }
 
-    @KafkaListener(topics = "orders")
-    private void ticketConsumer(ConsumerRecord<TableKey, OrderValue> order) {
-        String idMesa = order.key().getId();
-        TreeMap<String, Integer> product = new TreeMap<>(order.value().getMapOfProducts());
-        TreeMap<String, Integer> productsInTable = productMap.get(idMesa);
-        if (productsInTable == null)
-            productMap.put(idMesa, product);
-        else {
-            for (Map.Entry<String, Integer> a : product.entrySet()) {
-                productsInTable.merge(a.getKey(), a.getValue(), Integer::sum);
-            }
-        }
+    @Bean
+    public Consumer<KStream<TableKey, OrderValue>> process() {
+        return pedidoKeyPedidoValueKStream -> pedidoKeyPedidoValueKStream
+                .peek((k, v) -> log.info("Received message with key: {}", k))
+                .peek((k, v) -> {
+                    var aux = productMap;
+                    String idMesa = k.getId();
+                    TreeMap<String, Integer> product = new TreeMap<>(v.getMapOfProducts());
+                    TreeMap<String, Integer> productsInTable = productMap.get(idMesa);
+                    if (productsInTable == null)
+                        productMap.put(idMesa, product);
+                    else {
+                        for (Map.Entry<String, Integer> a : product.entrySet()) {
+                            productsInTable.merge(a.getKey(), a.getValue(), Integer::sum);
+                        }
+                    }
+                    log.info("Old price: {} | New price: {}", aux, productMap);
+                });
     }
-
 }

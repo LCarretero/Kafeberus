@@ -3,6 +3,20 @@ server:
 spring:
   application:
     name: ticket
+  cloud:
+    stream:
+      kafka:
+        streams:
+          default:
+            consumer:
+              configuration-schema-registry-url: http://localhost:8081
+              keySerde: io.confluent.kafka.streams.serdes.avro.SpecificAvroSerde
+              valueSerde: io.confluent.kafka.streams.serdes.avro.SpecificAvroSerde
+        function:
+          definition: process
+        bindings:
+          process-in-0:
+            destination: pedidos
   kafka:
     bootstrap-servers: localhost:9092
     consumer:
