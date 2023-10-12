@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @Service
 public class AdminUserService {
     @Autowired
@@ -21,9 +23,9 @@ public class AdminUserService {
     private final int MAX_POINTS = 5;
 
     public UserDTO crudOperation(String Authorization, DbbVerbs verb, UserDTO user) throws UnauthorizedException, BadRequestException {
-        if (!authorized(Authorization))
+        if (!isAuthorized(Authorization))
             throw new UnauthorizedException();
-        if (!validUser(user))
+        if (!isValidUser(user) && !verb.equals(DbbVerbs.DELETE))
             throw new BadRequestException();
 
         UserCRUDValue response = sendToTopic(verb.toString().toUpperCase(), user);
@@ -31,7 +33,7 @@ public class AdminUserService {
     }
 
     private UserCRUDValue sendToTopic(String verb, UserDTO data) {
-        CRUDKey key = CRUDKey.newBuilder().setId(data.uuid() == null ? data.name() : data.uuid()).build();
+        CRUDKey key = CRUDKey.newBuilder().setId(data.uuid() == null ? UUID.randomUUID().toString() : data.uuid()).build();
         UserCRUDValue value = UserCRUDValue.newBuilder()
                 .setName(data.name())
                 .setPoints(data.points())
@@ -40,7 +42,7 @@ public class AdminUserService {
         return value;
     }
 
-    private boolean validUser(UserDTO user) {
+    private boolean isValidUser(UserDTO user) {
         return validName(user.name()) && (user.points() >= 0 && MAX_POINTS <= 5);
     }
 
@@ -48,7 +50,7 @@ public class AdminUserService {
         return name != null && !name.isEmpty() && !name.matches(".*\\d.*");
     }
 
-    private boolean authorized(String Authorization) {
+    private boolean isAuthorized(String Authorization) {
         return KEYPASS.equals(Authorization);
     }
 }

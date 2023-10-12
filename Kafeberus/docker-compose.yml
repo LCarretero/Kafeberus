@@ -7,8 +7,8 @@ services:
     environment:
       POSTGRES_USER: ${POSTGRES_PRODUCTS}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD_PRODUCTS}
-      PGDATA: /data/postgres
       POSTGRES_DB: postgresProducts
+      PGDATA: /data/postgres
     volumes:
       - /data/products:/var/lib/postgresql/data
     ports:
@@ -33,7 +33,7 @@ services:
     environment:
       POSTGRES_USER: ${POSTGRES_USERS}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD_USERS}
-      POSTGRES_DB: postgresUser
+      POSTGRES_DB: postgresUsers
       PGDATA: /data/users
 
     volumes:

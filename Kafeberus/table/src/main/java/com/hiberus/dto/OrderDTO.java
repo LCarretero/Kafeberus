@@ -1,4 +1,4 @@
 package com.hiberus.dto;
 
-public record OrderDTO(String idMesa, String idProduct, String idUser) {
+public record OrderDTO(String productName, int quantity) {
 }

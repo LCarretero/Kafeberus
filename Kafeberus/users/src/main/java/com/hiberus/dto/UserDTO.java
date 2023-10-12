@@ -1,3 +1,3 @@
 package com.hiberus.dto;
-public record UserDTO(String name, byte fidelity) {
+public record UserDTO(String name, int fidelity) {
 }

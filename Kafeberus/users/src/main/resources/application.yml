@@ -1,9 +1,34 @@
+server:
+  port: 9044
 spring:
   application:
-    name: offers
-  cloud:
-    config:
-      uri: http://localhost:8888
-  mvc:
-    pathmatch:
-      matching-strategy: ant_path_matcher
+    name: users
+  datasource:
+    url: jdbc:postgresql://localhost:5334/postgresUsers
+    username: Userberus
+    password: postgres123U
+    driver-class-name: org.postgresql.Driver
+  kafka:
+    bootstrap-servers: localhost:9092
+
+    consumer:
+      group-id: crud-user-consumer
+      auto-offset-reset: earliest
+      key-deserializer: io.confluent.kafka.streams.serdes.avro.SpecificAvroDeserializer
+      value-deserializer: io.confluent.kafka.streams.serdes.avro.SpecificAvroDeserializer
+      properties:
+        specific.avro.reade: true
+        schema.registry.url: http://localhost:8081
+
+    producer:
+      key-serializer: io.confluent.kafka.streams.serdes.avro.SpecificAvroSerializer
+      value-serializer: io.confluent.kafka.streams.serdes.avro.SpecificAvroSerializer
+      properties:
+        specific.avro.reade: true
+        schema.registry.url: http://localhost:8081
+
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: create
+

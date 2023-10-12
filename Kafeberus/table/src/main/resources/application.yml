@@ -1,6 +1,5 @@
 server:
   port: 9034
-
 spring:
   application:
     name: table

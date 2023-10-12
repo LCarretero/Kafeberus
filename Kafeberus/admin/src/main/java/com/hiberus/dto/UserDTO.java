@@ -3,5 +3,5 @@ package com.hiberus.dto;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public record UserDTO(String uuid, String name, int points) {
+    public record UserDTO(String uuid, String name, int points) {
 }

@@ -1,0 +1,21 @@
+{
+  "type": "record",
+  "namespace": "com.hiberus.avro",
+  "name": "UserCRUDValue",
+  "fields": [
+    {
+      "name": "verb",
+      "type": "string"
+    },
+    {
+      "name": "name",
+      "type": "string",
+      "default": ""
+    },
+    {
+      "name": "points",
+      "type": "int",
+      "default": 0
+    }
+  ]
+}

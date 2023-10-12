@@ -19,7 +19,7 @@ import java.util.function.Consumer;
 public class TicketService {
     @Autowired
     private KafkaTemplate<TableKey, OrderValue> kafkaTemplate;
-    private Map<String, TreeMap<String, Integer>> productMap = new TreeMap<>();
+    private final Map<String, TreeMap<String, Integer>> productMap = new TreeMap<>();
 
     public TicketDTO makeTicket(String userId, String idMesa) {
         TableKey key = TableKey.newBuilder().setId(idMesa).build();
@@ -30,7 +30,7 @@ public class TicketService {
                 .setIdUser(userId)
                 .build();
         kafkaTemplate.send("ticket-created", key, value);
-        productMap = new TreeMap<>();
+        productMap.remove(idMesa);
         return new TicketDTO(idMesa, userId);
     }
 

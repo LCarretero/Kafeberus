@@ -11,6 +11,7 @@ import com.hiberus.models.Product;
 import com.hiberus.repository.ProductRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +21,7 @@ import java.util.Optional;
 @Slf4j
 public class ProductService {
 
+    @Autowired
     private final ProductRepository productRepository;
 
     public ProductService(ProductRepository productRepository) {

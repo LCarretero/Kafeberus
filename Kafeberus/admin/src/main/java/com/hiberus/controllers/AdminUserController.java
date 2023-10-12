@@ -2,7 +2,6 @@ package com.hiberus.controllers;
 
 import com.hiberus.Exception.BadRequestException;
 import com.hiberus.Exception.UnauthorizedException;
-import com.hiberus.dto.UpdateUser;
 import com.hiberus.dto.UserDTO;
 import com.hiberus.enums.DbbVerbs;
 import com.hiberus.services.AdminUserService;
@@ -29,9 +28,9 @@ public class AdminUserController {
     }
 
     @DeleteMapping("/delete")
-    public ResponseEntity<UserDTO> deleteUser(@RequestHeader(name = "Authorization") String Authorization, @RequestParam(name = "name") String name) {
+    public ResponseEntity<UserDTO> deleteUser(@RequestHeader(name = "Authorization") String Authorization, @RequestParam(name = "id") String id) {
         try {
-            return ResponseEntity.ok(adminUserService.crudOperation(Authorization, DbbVerbs.DELETE, new UserDTO(null, name, 0)));
+            return ResponseEntity.ok(adminUserService.crudOperation(Authorization, DbbVerbs.DELETE, new UserDTO(id, "", 0)));
         } catch (UnauthorizedException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         } catch (BadRequestException e) {
@@ -40,9 +39,9 @@ public class AdminUserController {
     }
 
     @PutMapping("/update")
-    public ResponseEntity<UserDTO> updateUser(@RequestHeader(name = "Authorization") String Authorization, @RequestBody UserDTO user) {
+    public ResponseEntity<UserDTO> updateUser(@RequestHeader(name = "Authorization") String Authorization, @RequestParam(name = "id") String id, @RequestBody UserDTO user) {
         try {
-            return ResponseEntity.ok(adminUserService.crudOperation(Authorization, DbbVerbs.PUT, user));
+            return ResponseEntity.ok(adminUserService.crudOperation(Authorization, DbbVerbs.PUT, new UserDTO(id, user.name(), user.points())));
         } catch (UnauthorizedException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         } catch (BadRequestException e) {

@@ -1,6 +1,7 @@
 package com.hiberus.models;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -10,6 +11,7 @@ import java.util.UUID;
 @Table(name = "users")
 @Entity
 @Getter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class User {
@@ -17,5 +19,5 @@ public class User {
     @Id
     private UUID id;
     private String name;
-    private byte fidelity;
+    private int fidelity;
 }
