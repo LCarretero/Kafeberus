@@ -1,38 +1,46 @@
 server:
   port: 9024
+
 spring:
   application:
     name: ticket
-  cloud:
-    stream:
-      kafka:
-        streams:
-          default:
-            consumer:
-              configuration-schema-registry-url: http://localhost:8081
-              keySerde: io.confluent.kafka.streams.serdes.avro.SpecificAvroSerde
-              valueSerde: io.confluent.kafka.streams.serdes.avro.SpecificAvroSerde
-        function:
-          definition: process
-        bindings:
-          process-in-0:
-            destination: pedidos
+
   kafka:
     bootstrap-servers: localhost:9092
-    consumer:
-      group-id: ticket-created
-      auto-offset-reset: earliest
-      key-deserializer: io.confluent.kafka.streams.serdes.avro.SpecificAvroDeserializer
-      value-deserializer: io.confluent.kafka.streams.serdes.avro.SpecificAvroDeserializer
-      properties:
-        specific.avro.reade: true
-        schema.registry.url: http://localhost:8081
     producer:
       key-serializer: io.confluent.kafka.streams.serdes.avro.SpecificAvroSerializer
       value-serializer: io.confluent.kafka.streams.serdes.avro.SpecificAvroSerializer
       properties:
         specific.avro.reade: true
         schema.registry.url: http://localhost:8081
+
+  cloud:
+    function:
+      definition: process
+    stream:
+      bindings:
+        process-in-0:
+          destination: pedidos
+      kafka:
+        binder:
+          brokers: "localhost:9092"
+        streams:
+          bindings:
+            process-in-0:
+              consumer:
+                keySerde: io.confluent.kafka.streams.serdes.avro.SpecificAvroSerde
+                valueSerde: io.confluent.kafka.streams.serdes.avro.SpecificAvroSerde
+
+          binder:
+            configuration:
+              commit.interval.ms: 100
+              session.timeout.ms: 10000
+              schema.registry.url: http://localhost:8081
+              auto.register.schemas: true
+              default.key.serde: io.confluent.kafka.streams.serdes.avro.SpecificAvroSerde
+              default.value.serde: io.confluent.kafka.streams.serdes.avro.SpecificAvroSerde
+
+
   config:
     activate:
       on-profile: default
