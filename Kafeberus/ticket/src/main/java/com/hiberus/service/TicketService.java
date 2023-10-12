@@ -37,8 +37,8 @@ public class TicketService {
     @Bean
     public Consumer<KStream<TableKey, OrderValue>> process() {
         return pedidoKeyPedidoValueKStream -> pedidoKeyPedidoValueKStream
-                .peek((k, v) -> log.info("Received message with key: {}", k))
                 .peek((k, v) -> {
+                    log.info("Received message with key: {}", k);
                     var aux = productMap;
                     String idMesa = k.getId();
                     TreeMap<String, Integer> product = new TreeMap<>(v.getMapOfProducts());

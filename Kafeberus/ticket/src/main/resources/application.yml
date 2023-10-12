@@ -20,7 +20,7 @@ spring:
     stream:
       bindings:
         process-in-0:
-          destination: pedidos
+          destination: order-by-table
       kafka:
         binder:
           brokers: "localhost:9092"
