@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.*;
 public class TicketController {
     @Autowired
     private TicketService ticketService;
-    @PostMapping("/createTicket/{idMesa}")
-    public ResponseEntity<TicketDTO> makeTicket(@RequestParam(name = "userId") String userId, @PathVariable(name = "idMesa") String idMesa) {
-        return ResponseEntity.ok(ticketService.makeTicket(userId, idMesa));
+    @PostMapping("/createTicket/{idTable}")
+    public ResponseEntity<TicketDTO> makeTicket(@RequestParam(name = "userId") String userId, @PathVariable(name = "idTable") String idTable) {
+        return ResponseEntity.ok(ticketService.makeTicket(userId, idTable));
     }
 
 }

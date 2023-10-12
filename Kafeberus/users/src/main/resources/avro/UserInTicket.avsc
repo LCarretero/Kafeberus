@@ -1,0 +1,15 @@
+{
+  "type": "record",
+  "namespace": "com.hiberus.avro",
+  "name": "UserInTicket",
+  "fields": [
+    {
+      "name": "idUser",
+      "type": "string"
+    },
+    {
+      "name": "rewarded",
+      "type": "boolean"
+    }
+  ]
+}

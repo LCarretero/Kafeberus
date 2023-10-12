@@ -11,7 +11,7 @@ spring:
       key-serializer: io.confluent.kafka.streams.serdes.avro.SpecificAvroSerializer
       value-serializer: io.confluent.kafka.streams.serdes.avro.SpecificAvroSerializer
       properties:
-        specific.avro.reade: true
+        specific.avro.reader: true
         schema.registry.url: http://localhost:8081
 
   cloud:
@@ -35,11 +35,11 @@ spring:
             configuration:
               commit.interval.ms: 100
               session.timeout.ms: 10000
+              max-poll-interval-ms: 60000
               schema.registry.url: http://localhost:8081
               auto.register.schemas: true
               default.key.serde: io.confluent.kafka.streams.serdes.avro.SpecificAvroSerde
               default.value.serde: io.confluent.kafka.streams.serdes.avro.SpecificAvroSerde
-
 
   config:
     activate:

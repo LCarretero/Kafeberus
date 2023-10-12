@@ -1,9 +1,6 @@
 package com.hiberus.models;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.UUID;
@@ -19,5 +16,6 @@ public class User {
     @Id
     private UUID id;
     private String name;
+    @Setter
     private int fidelity;
 }

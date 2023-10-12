@@ -1,7 +1,6 @@
 package com.hiberus.service;
 
-import com.hiberus.avro.CRUDKey;
-import com.hiberus.avro.UserCRUDValue;
+import com.hiberus.avro.*;
 import com.hiberus.exception.CrudBadVerbException;
 import com.hiberus.mappers.UserMapper;
 import com.hiberus.models.User;
@@ -10,8 +9,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -21,6 +22,8 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    KafkaTemplate<TableKey, UserInTicket> kafkaTemplate;
     private final int PROMO = 0;
 
     @KafkaListener(topics = "crud-user")
@@ -36,8 +39,35 @@ public class UserService {
         }
     }
 
+    @KafkaListener(topics = "ticket-created")
+    private void userInTicket(ConsumerRecord<TableKey, TicketValue> record) {
+        String userId = record.value().getIdUser();
+        if (!validId(userId))
+            return;
+        Optional<User> userFromDb = userRepository.findById(UUID.fromString(userId));
+        if (userFromDb.isEmpty())
+            return;
+        User userDb = userFromDb.get();
+        userDb.setFidelity(userDb.getFidelity() + 1);
+        TableKey key = TableKey.newBuilder().setIdTable(record.key().getIdTable()).build();
+
+        UserInTicket value = UserInTicket.newBuilder()
+                .setIdUser(record.key().getIdTable())
+                .setRewarded(false)
+                .build();
+        if (userFromDb.get().getFidelity() >= 5) {
+            value.setRewarded(true);
+            userDb.setFidelity(0);
+        }
+
+        userRepository.save(userDb);
+
+        kafkaTemplate.send("user-in-ticket", key, value);
+    }
+
+
     //region PRIVATE_METHODS
-    private void createUser(String id ,User user) {
+    private void createUser(String id, User user) {
         if (!validName(user.getName())) {
             log.info("User name not valid {}", user.getName());
             return;
