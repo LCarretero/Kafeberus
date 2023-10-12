@@ -1,0 +1,19 @@
+{
+  "type": "record",
+  "namespace": "es.curso.kafka.avro",
+  "name": "MappedPedidoKey",
+  "fields": [
+    {
+      "name": "id",
+      "type": "long"
+    },
+    {
+      "name": "nombre",
+      "type": "string"
+    },
+    {
+      "name": "producto",
+      "type": "string"
+    }
+  ]
+}
