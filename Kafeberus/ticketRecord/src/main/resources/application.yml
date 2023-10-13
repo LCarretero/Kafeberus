@@ -19,7 +19,6 @@ spring:
     function:
       definition: process
     stream:
-      defaultBinder: io.confluent.kafka.streams.serdes.avro.SpecificAvroSerde
       bindings:
         process-in-0:
           destination: ticket
@@ -27,22 +26,19 @@ spring:
       kafka:
         binder:
           brokers: "localhost:9092"
+          configuration:
+            commit.interval.ms: 100
+            session.timeout.ms: 10000
+            max-poll-interval-ms: 60000
+            auto.register.schemas: true
+            default.key.serde: io.confluent.kafka.streams.serdes.avro.SpecificAvroSerde
+            default.value.serde: io.confluent.kafka.streams.serdes.avro.SpecificAvroSerde
         streams:
           bindings:
             process-in-0:
               consumer:
-                schema.registry.url: http://localhost:8081
                 keySerde: io.confluent.kafka.streams.serdes.avro.SpecificAvroSerde
                 valueSerde: io.confluent.kafka.streams.serdes.avro.SpecificAvroSerde
-      binder:
-        brokers: "localhost:9092"
-        configuration:
-          commit.interval.ms: 100
-          session.timeout.ms: 10000
-          max-poll-interval-ms: 60000
-          auto.register.schemas: true
-          default.key.serde: io.confluent.kafka.streams.serdes.avro.SpecificAvroSerde
-          default.value.serde: io.confluent.kafka.streams.serdes.avro.SpecificAvroSerde
 
   config:
     activate:

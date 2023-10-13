@@ -17,7 +17,7 @@ import java.util.UUID;
 public class Ticket {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID id;
+    private UUID idTicket;
     private UUID userId;
     private double price;
     private String timeStamp;
