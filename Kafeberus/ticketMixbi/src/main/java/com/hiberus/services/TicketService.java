@@ -22,7 +22,7 @@ public class TicketService {
         return (userStream, productStream) -> {
             KTable<TicketKey, UserInTicketValue> userKTable = userStream
                     .selectKey((k, v) -> TicketKey.newBuilder().setIdTicket(v.getIdTicket()).build())
-                    .toTable(Named.as("USER_TICKET"), Materialized.as("CARACTERISTICAS_PRODUCTOS"));
+                    .toTable(Named.as("USER_TICKET"), Materialized.as("USER_TICKET"));
 
             KTable<TicketKey, ProductsInTicketValue> productKTable = productStream
                     .selectKey((k, v) -> TicketKey.newBuilder().setIdTicket(v.getIdTicket()).build())

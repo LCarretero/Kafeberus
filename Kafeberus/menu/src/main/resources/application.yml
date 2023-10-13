@@ -10,6 +10,11 @@ spring:
     username: Productberus
     password: postgres123P
     driver-class-name: org.postgresql.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: create
+
   kafka:
     bootstrap-servers: localhost:9092
 
@@ -28,10 +33,7 @@ spring:
       properties:
         specific.avro.reade: true
         schema.registry.url: http://localhost:8081
-  jpa:
-    database-platform: org.hibernate.dialect.PostgreSQLDialect
-    hibernate:
-      ddl-auto: create
+
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher

@@ -12,7 +12,7 @@ spring:
     bootstrap-servers: localhost:9092
 
     consumer:
-      group-id: crud-user-consumer
+      group-id: user-consumer
       auto-offset-reset: earliest
       key-deserializer: io.confluent.kafka.streams.serdes.avro.SpecificAvroDeserializer
       value-deserializer: io.confluent.kafka.streams.serdes.avro.SpecificAvroDeserializer

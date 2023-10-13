@@ -4,6 +4,7 @@ package com.hiberus.services;
 import com.hiberus.avro.OrderValue;
 import com.hiberus.avro.TableKey;
 import com.hiberus.dto.OrderDTO;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.TreeMap;
 
 @Service
+@Slf4j
 public class OrderService {
     @Autowired
     private KafkaTemplate<TableKey, OrderValue> kafkaTemplate;
@@ -31,6 +33,7 @@ public class OrderService {
                 .setMapOfProducts(products)
                 .build();
 
+        log.info("Key:{} --- value:{}", key,value);
         kafkaTemplate.send("order-by-table", key, value);
     }
 }

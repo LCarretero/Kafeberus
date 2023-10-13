@@ -34,6 +34,7 @@ public class TicketService {
                 .setIdUser(userId)
                 .build();
         kafkaTemplate.send("ticket-created", key, value);
+        log.info("Key:{} --- value:{}", key,value);
         productMap.remove(idTable);
         return new TicketDTO(idTable, userId);
     }

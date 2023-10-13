@@ -1,0 +1,54 @@
+server:
+  port: 9064
+
+spring:
+  application:
+    name: ticketRecord
+
+  datasource:
+    url: jdbc:postgresql://localhost:5333/postgresBills
+    username: Billberus
+    password: postgres123B
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: create
+
+  cloud:
+    function:
+      definition: process
+    stream:
+      defaultBinder: io.confluent.kafka.streams.serdes.avro.SpecificAvroSerde
+      bindings:
+        process-in-0:
+          destination: ticket
+
+      kafka:
+        streams:
+          bindings:
+            process-in-0:
+              consumer:
+                keySerde: io.confluent.kafka.streams.serdes.avro.SpecificAvroSerde
+                valueSerde: io.confluent.kafka.streams.serdes.avro.SpecificAvroSerde
+      binder:
+        brokers: "localhost:9092"
+        configuration:
+          commit.interval.ms: 100
+          session.timeout.ms: 10000
+          max-poll-interval-ms: 60000
+          schema.registry.url: http://localhost:8081
+          auto.register.schemas: true
+          default.key.serde: io.confluent.kafka.streams.serdes.avro.SpecificAvroSerde
+          default.value.serde: io.confluent.kafka.streams.serdes.avro.SpecificAvroSerde
+
+  kafka.producer.properties:
+    key.serializer: io.confluent.kafka.streams.serdes.avro.SpecificAvroSerializer
+    value.serializer: io.confluent.kafka.streams.serdes.avro.SpecificAvroSerializer
+    schema.registry.url: http://localhost:8081
+
+    binder:
+
+  config:
+    activate:
+      on-profile: default

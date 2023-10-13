@@ -50,10 +50,11 @@ public class UserService {
             return;
         User userDb = userFromDb.get();
         userDb.setFidelity(userDb.getFidelity() + 1);
-        TableKey key = TableKey.newBuilder().setIdTable(record.key().getIdTable()).build();
+        TableKey key = record.key();
 
         UserInTicketValue value = UserInTicketValue.newBuilder()
-                .setIdUser(record.key().getIdTable())
+                .setIdUser(String.valueOf(userDb.getId()))
+                .setIdTicket(record.value().getIdTicket())
                 .setUserName(userDb.getName())
                 .setRewarded(false)
                 .build();
@@ -66,6 +67,7 @@ public class UserService {
         userRepository.save(userDb);
 
         kafkaTemplate.send("user-in-ticket", key, value);
+        log.info("Key:{} --- value:{}", key,value);
     }
 
 

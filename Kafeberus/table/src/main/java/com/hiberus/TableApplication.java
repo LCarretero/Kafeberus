@@ -6,8 +6,8 @@ import org.springframework.kafka.annotation.EnableKafka;
 
 @SpringBootApplication
 @EnableKafka
-public class MenuConsumerApplication {
+public class TableApplication {
     public static void main(String[] args) {
-        SpringApplication.run(MenuConsumerApplication.class, args);
+        SpringApplication.run(TableApplication.class, args);
     }
 }

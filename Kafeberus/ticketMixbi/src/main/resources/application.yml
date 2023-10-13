@@ -8,8 +8,8 @@ spring:
   kafka:
     bootstrap-servers: localhost:9092
     producer:
-      key-serializer: io.confluent.kafka.streams.serdes.avro.SpecificAvroSerializer
-      value-serializer: io.confluent.kafka.streams.serdes.avro.SpecificAvroSerializer
+      key-serializer: io.confluent.kafka.streams.serdes.avro.SpecificAvroSerde
+      value-serializer: io.confluent.kafka.streams.serdes.avro.SpecificAvroSerde
       properties:
         specific.avro.reader: true
         schema.registry.url: http://localhost:8081
@@ -20,15 +20,13 @@ spring:
     stream:
       bindings:
         process-in-0:
-          destination: products-in-ticket
-        process-in-1:
           destination: user-in-ticket
+        process-in-1:
+          destination: products-in-ticket
         process-out-0:
           destination: ticket
 
       kafka:
-        binder:
-          brokers: "localhost:9092"
         streams:
           bindings:
             process-in-0:
@@ -39,12 +37,13 @@ spring:
               consumer:
                 keySerde: io.confluent.kafka.streams.serdes.avro.SpecificAvroSerde
                 valueSerde: io.confluent.kafka.streams.serdes.avro.SpecificAvroSerde
-              process-out-0:
-                consumer:
-                  keySerde: io.confluent.kafka.streams.serdes.avro.SpecificAvroSerde
-                  valueSerde: io.confluent.kafka.streams.serdes.avro.SpecificAvroSerde
+            process-out-0:
+              consumer:
+                keySerde: io.confluent.kafka.streams.serdes.avro.SpecificAvroSerde
+                valueSerde: io.confluent.kafka.streams.serdes.avro.SpecificAvroSerde
 
           binder:
+            brokers: "localhost:9092"
             configuration:
               commit.interval.ms: 100
               session.timeout.ms: 10000
@@ -53,7 +52,10 @@ spring:
               auto.register.schemas: true
               default.key.serde: io.confluent.kafka.streams.serdes.avro.SpecificAvroSerde
               default.value.serde: io.confluent.kafka.streams.serdes.avro.SpecificAvroSerde
-
+  kafka.producer.properties:
+    key.serializer: io.confluent.kafka.streams.serdes.avro.SpecificAvroSerializer
+    value.serializer: io.confluent.kafka.streams.serdes.avro.SpecificAvroSerializer
+    schema.registry.url: http://localhost:8081
   config:
     activate:
       on-profile: default
