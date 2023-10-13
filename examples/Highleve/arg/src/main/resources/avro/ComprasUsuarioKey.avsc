@@ -1,0 +1,11 @@
+{
+  "type": "record",
+  "namespace": "es.curso.kafka.avro",
+  "name": "ComprasUsuarioKey",
+  "fields": [
+    {
+      "name": "id_usuario",
+      "type": "string"
+    }
+  ]
+}

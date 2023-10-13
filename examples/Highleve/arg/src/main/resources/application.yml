@@ -1,0 +1,58 @@
+server.port: 9875
+
+topic-in-0: KStreamsAggregatorExampleInputTopic
+topic-out-0: KStreamsAggregatorExampleOutputTopic
+
+spring:
+    # Si le cambias el nombre vuelve a leer todos los mensajes de los topics de entrada desde el inicio
+    application.name: kafka-KStreamExample
+
+    cloud:
+
+        # Funciones
+        function.definition: supplier;aggregateMessages;
+
+        stream:
+
+            # Cada cuánto tiempo se van a lanzar los suppliers (son cron)
+            poller.fixedDelay: 5000
+
+            # Configuración entre topics y funciones
+            bindings:
+                supplier-out-0:
+                    destination: ${topic-in-0}
+                    producer.useNativeEncoding: true
+                aggregateMessages-in-0:
+                    destination: ${topic-in-0}
+                    consumer:
+                        concurrency: 1
+                        useNativeDecoding: true
+                aggregateMessages-out-0:
+                    destination: ${topic-out-0}
+                    producer.useNativeEncoding: true
+
+            kafka.streams:
+
+                # Configuración de consumidores
+                bindings:
+                    aggregateMessages-in-0:
+                        consumer:
+                            keySerde: io.confluent.kafka.streams.serdes.avro.SpecificAvroSerde
+                            valueSerde: io.confluent.kafka.streams.serdes.avro.SpecificAvroSerde
+                            applicationId: ${spring.application.name}
+
+                # Configuración de Kafka
+                binder:
+                    configuration:
+                        commit.interval.ms: 100
+                        session.timeout.ms: 10000
+                        schema.registry.url: http://localhost:8081
+                        auto.register.schemas: true
+                        default.key.serde: io.confluent.kafka.streams.serdes.avro.SpecificAvroSerde
+                        default.value.serde: io.confluent.kafka.streams.serdes.avro.SpecificAvroSerde
+
+    # Configuración de productores
+    kafka.producer.properties:
+        key.serializer: io.confluent.kafka.streams.serdes.avro.SpecificAvroSerializer
+        value.serializer: io.confluent.kafka.streams.serdes.avro.SpecificAvroSerializer
+        schema.registry.url: http://localhost:8081

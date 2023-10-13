@@ -15,7 +15,7 @@ import java.util.function.BiFunction;
 
 @Service
 @Slf4j
-public class TicketService {
+public class TicketMixbiService {
 
     @Bean
     public BiFunction<KStream<TableKey, UserInTicketValue>, KStream<TableKey, ProductsInTicketValue>, KStream<TicketKey, FinalTicket>> process() {

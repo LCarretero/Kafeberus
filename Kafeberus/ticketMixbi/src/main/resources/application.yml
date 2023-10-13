@@ -52,10 +52,12 @@ spring:
               auto.register.schemas: true
               default.key.serde: io.confluent.kafka.streams.serdes.avro.SpecificAvroSerde
               default.value.serde: io.confluent.kafka.streams.serdes.avro.SpecificAvroSerde
+
   kafka.producer.properties:
     key.serializer: io.confluent.kafka.streams.serdes.avro.SpecificAvroSerializer
     value.serializer: io.confluent.kafka.streams.serdes.avro.SpecificAvroSerializer
     schema.registry.url: http://localhost:8081
+
   config:
     activate:
       on-profile: default

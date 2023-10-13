@@ -13,9 +13,10 @@ import org.springframework.stereotype.Service;
 
 import java.util.function.Consumer;
 
-@Slf4j
+
 @Service
-public class TicketService {
+@Slf4j
+public class TicketRecordService {
     @Autowired
     private TicketRepository ticketRepository;
 

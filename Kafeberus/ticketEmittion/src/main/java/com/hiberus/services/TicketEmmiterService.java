@@ -19,7 +19,7 @@ import java.util.function.Consumer;
 
 @Service
 @Slf4j
-public class TicketService {
+public class TicketEmmiterService {
     @Autowired
     private KafkaTemplate<TableKey, TicketValue> kafkaTemplate;
     private final Map<String, TreeMap<String, Integer>> productMap = new TreeMap<>();

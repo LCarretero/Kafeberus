@@ -1,0 +1,23 @@
+{
+  "type": "record",
+  "namespace": "es.curso.kafka.avro",
+  "name": "PedidoUsuarioValue",
+  "fields": [
+    {
+      "name": "event_type",
+      "type": {
+        "type": "enum",
+        "name": "EventType",
+        "namespace": "es.curso.kafka.avro",
+        "symbols": [
+          "CREATE",
+          "DELETE"
+        ]
+      }
+    },
+    {
+      "name": "id_producto",
+      "type": "string"
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "type": "record",
+  "namespace": "es.curso.kafka.avro",
+  "name": "ComprasUsuarioValue",
+  "fields": [
+    {
+      "name": "compras",
+      "type": {
+        "type": "array",
+        "items": {
+          "type": "record",
+          "namespace": "es.curso.kafka.avro",
+          "name": "Producto",
+          "fields": [
+            {
+              "name": "id_producto",
+              "type": "string"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

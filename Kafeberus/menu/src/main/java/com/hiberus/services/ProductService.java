@@ -43,14 +43,15 @@ public class ProductService {
 
     //region PRIVATE_METHODS
     @KafkaListener(topics = "ticket-created")
-    private void productsInTicketConsumer(ConsumerRecord<TableKey, TicketValue> crudProduct) {
+    private void productsInTicketConsumer(ConsumerRecord<TableKey, TicketValue> products) {
         ProductsInTicketValue value = ProductsInTicketValue.newBuilder()
-                .setIdTicket(crudProduct.value().getIdTicket())
-                .setMapOfProducts(crudProduct.value().getMapOfProducts())
-                .setTotalPrice(calculatePrice(crudProduct.value().getMapOfProducts()))
+                .setIdTicket(products.value().getIdTicket())
+                .setMapOfProducts(products.value().getMapOfProducts())
+                .setTotalPrice(calculatePrice(products.value().getMapOfProducts()))
                 .build();
 
-        kafkaTemplate.send("products-in-ticket", crudProduct.key(), value);
+        log.info("Key{} ---- value{}",products.key(),products.value());
+        kafkaTemplate.send("products-in-ticket", products.key(), value);
     }
 
     @KafkaListener(topics = "crud-product")
