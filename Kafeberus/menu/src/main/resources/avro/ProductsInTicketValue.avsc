@@ -1,0 +1,22 @@
+{
+  "type": "record",
+  "namespace": "com.hiberus.avro",
+  "name": "ProductsInTicketValue",
+  "fields": [
+    {
+      "name": "idTicket",
+      "type": "string"
+    },
+    {
+      "name": "mapOfProducts",
+      "type": {
+        "type": "map",
+        "values": "int"
+      }
+    },
+    {
+      "name": "totalPrice",
+      "type": "double"
+    }
+  ]
+}

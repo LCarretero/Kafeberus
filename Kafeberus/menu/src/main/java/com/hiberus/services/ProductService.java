@@ -1,8 +1,6 @@
 package com.hiberus.services;
 
-import com.hiberus.avro.CRUDKey;
-import com.hiberus.avro.OfferCRUDValue;
-import com.hiberus.avro.ProductCRUDValue;
+import com.hiberus.avro.*;
 import com.hiberus.dto.ProductDTO;
 import com.hiberus.exceptions.CrudBadVerbException;
 import com.hiberus.exceptions.ProductNotFoundException;
@@ -13,8 +11,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -23,6 +23,8 @@ public class ProductService {
 
     @Autowired
     private final ProductRepository productRepository;
+    @Autowired
+    private KafkaTemplate<TableKey, ProductsInTicketValue> kafkaTemplate;
 
     public ProductService(ProductRepository productRepository) {
         this.productRepository = productRepository;
@@ -41,8 +43,14 @@ public class ProductService {
 
     //region PRIVATE_METHODS
     @KafkaListener(topics = "ticket-created")
-    private void productConsumer(ConsumerRecord<CRUDKey, ProductCRUDValue> crudProduct){
+    private void productsInTicketConsumer(ConsumerRecord<TableKey, TicketValue> crudProduct) {
+        ProductsInTicketValue value = ProductsInTicketValue.newBuilder()
+                .setIdTicket(crudProduct.value().getIdTicket())
+                .setMapOfProducts(crudProduct.value().getMapOfProducts())
+                .setTotalPrice(calculatePrice(crudProduct.value().getMapOfProducts()))
+                .build();
 
+        kafkaTemplate.send("products-in-ticket", crudProduct.key(), value);
     }
 
     @KafkaListener(topics = "crud-product")
@@ -91,7 +99,7 @@ public class ProductService {
             errorMessage(product.getName());
             return;
         }
-        float newPrice = discount == 0 ? product.getPrice() : calculatePrice(discount, product.getPrice());
+        float newPrice = discount == 0 ? product.getPrice() : calculateDiscount(discount, product.getPrice());
         Product productToDB = Product.builder().id(productFromDB.get().getId())
                 .name(product.getName())
                 .price(product.getPrice())
@@ -121,7 +129,20 @@ public class ProductService {
         productRepository.save(product);
     }
 
-    private float calculatePrice(float discount, float price) {
+    private double calculatePrice(Map<String, Integer> mapOfProducts) {
+        return mapOfProducts.entrySet().stream()
+                .map(entry -> {
+                    String productName = entry.getKey();
+                    int quantity = entry.getValue();
+                    Optional<Product> product = productRepository.findByName(productName);
+                    double productPrice = product.map(Product::getDiscountedPrice).orElse(5F);
+                    return productPrice * quantity;
+                })
+                .reduce(0.0, Double::sum);
+    }
+
+
+    private float calculateDiscount(float discount, float price) {
         return price - (price * discount / 100);
     }
     //endregion
