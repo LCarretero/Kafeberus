@@ -1,0 +1,11 @@
+{
+  "type": "record",
+  "namespace": "es.curso.kafka.avro",
+  "name": "ProductoKey",
+  "fields": [
+    {
+      "name": "id",
+      "type": "string"
+    }
+  ]
+}

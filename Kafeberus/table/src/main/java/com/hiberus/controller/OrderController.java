@@ -1,7 +1,7 @@
 package com.hiberus.controller;
 
 import com.hiberus.dto.OrderDTO;
-import com.hiberus.service.OrderService;
+import com.hiberus.services.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

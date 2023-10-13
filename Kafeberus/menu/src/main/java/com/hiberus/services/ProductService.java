@@ -6,7 +6,7 @@ import com.hiberus.exceptions.CrudBadVerbException;
 import com.hiberus.exceptions.ProductNotFoundException;
 import com.hiberus.mappers.ProductMapper;
 import com.hiberus.models.Product;
-import com.hiberus.repository.ProductRepository;
+import com.hiberus.repositories.ProductRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.beans.factory.annotation.Autowired;

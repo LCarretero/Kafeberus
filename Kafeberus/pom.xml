@@ -13,7 +13,8 @@
         <module>users</module>
         <module>table</module>
         <module>ticketMixbi</module>
-        <module>ticket</module>
+        <module>ticketEmittion</module>
+        <module>ticketRecord</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>

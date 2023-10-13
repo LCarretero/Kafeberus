@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2023-10-13T06:54:28.962Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36 Edg/117.0.2045.60" etag="SPIKCzxx8NjJfulNaIAR" version="22.0.4" type="device">
+<mxfile host="app.diagrams.net" modified="2023-10-13T07:35:46.802Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36 Edg/117.0.2045.60" etag="o7AEeWIfXesNYkHFP5FO" version="22.0.4" type="device">
   <diagram name="Página-1" id="0qJBGttC3PnJGThFjGUG">
-    <mxGraphModel dx="2887" dy="1700" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="3626" dy="2019" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -524,6 +524,9 @@
         </mxCell>
         <mxCell id="tm267tQ9X17v9Ct_pTAL-78" value="ticket" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
           <mxGeometry x="-440" y="65" width="50" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="wOLFSJCU9BDV92zppJqM-69" value="/createTicket/{idTable}" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="1184" y="-425" width="140" height="30" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>

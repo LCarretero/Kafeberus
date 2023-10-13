@@ -1,7 +1,7 @@
 package com.hiberus.config;
 
 import com.hiberus.models.User;
-import com.hiberus.repository.UserRepository;
+import com.hiberus.repositories.UserRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

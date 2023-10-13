@@ -1,0 +1,11 @@
+{
+  "type": "record",
+  "namespace": "com.hiberus.avro",
+  "name": "TicketKey",
+  "fields": [
+    {
+      "name": "idTicket",
+      "type": "string"
+    }
+  ]
+}

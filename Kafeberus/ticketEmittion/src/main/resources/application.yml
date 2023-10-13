@@ -1,9 +1,9 @@
 server:
-  port: 9024
+  port: 9054
 
 spring:
   application:
-    name: ticketMixbi
+    name: ticket
 
   kafka:
     bootstrap-servers: localhost:9092
@@ -20,12 +20,7 @@ spring:
     stream:
       bindings:
         process-in-0:
-          destination: products-in-ticket
-        process-in-1:
-          destination: user-in-ticket
-        process-out-0:
-          destination: ticket
-
+          destination: order-by-table
       kafka:
         binder:
           brokers: "localhost:9092"
@@ -35,14 +30,6 @@ spring:
               consumer:
                 keySerde: io.confluent.kafka.streams.serdes.avro.SpecificAvroSerde
                 valueSerde: io.confluent.kafka.streams.serdes.avro.SpecificAvroSerde
-            process-in-1:
-              consumer:
-                keySerde: io.confluent.kafka.streams.serdes.avro.SpecificAvroSerde
-                valueSerde: io.confluent.kafka.streams.serdes.avro.SpecificAvroSerde
-              process-out-0:
-                consumer:
-                  keySerde: io.confluent.kafka.streams.serdes.avro.SpecificAvroSerde
-                  valueSerde: io.confluent.kafka.streams.serdes.avro.SpecificAvroSerde
 
           binder:
             configuration:
