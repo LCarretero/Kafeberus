@@ -1,16 +1,19 @@
 server:
   port: 9034
+
 spring:
   application:
     name: table
+
   kafka:
     bootstrap-servers: localhost:9092
     producer:
       key-serializer: io.confluent.kafka.streams.serdes.avro.SpecificAvroSerializer
       value-serializer: io.confluent.kafka.streams.serdes.avro.SpecificAvroSerializer
       properties:
-        specific.avro.reade: true
+        specific.avro.reader: true
         schema.registry.url: http://localhost:8081
+
   config:
     activate:
       on-profile: default

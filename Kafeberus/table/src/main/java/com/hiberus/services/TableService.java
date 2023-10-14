@@ -13,7 +13,7 @@ import java.util.TreeMap;
 
 @Service
 @Slf4j
-public class OrderService {
+public class TableService {
     @Autowired
     private KafkaTemplate<TableKey, OrderValue> kafkaTemplate;
 
