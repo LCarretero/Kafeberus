@@ -1,6 +1,5 @@
 package com.hiberus.services;
 
-
 import com.hiberus.avro.OrderValue;
 import com.hiberus.avro.TableKey;
 import com.hiberus.avro.TicketValue;
@@ -19,18 +18,16 @@ import java.util.function.Consumer;
 
 @Service
 @Slf4j
-public class TicketEmitterService {
-
+public class TicketRequestService {
 
     @Autowired
     private KafkaTemplate<TableKey, TicketValue> kafkaTemplate;
 
-//    @Autowired
-//    private Initializer initializer;
+    // @Autowired
+    // private Initializer initializer;
 
-//    @Autowired
-//    private Aggregator aggregator;
-
+    // @Autowired
+    // private Aggregator aggregator;
 
     private final Map<String, TreeMap<String, Integer>> valueAccumulator = new TreeMap<>();
 
@@ -48,7 +45,8 @@ public class TicketEmitterService {
 
         TableKey key = TableKey.newBuilder().setIdTable(idTable).build();
         TicketValue value = TicketValue.newBuilder()
-                .setMapOfProducts(valueAccumulator.get(idTable) == null ? new TreeMap<>() : valueAccumulator.get(idTable))
+                .setMapOfProducts(
+                        valueAccumulator.get(idTable) == null ? new TreeMap<>() : valueAccumulator.get(idTable))
                 .setIdTicket(UUID.randomUUID().toString())
                 .setIdUser(userId)
                 .build();
@@ -68,11 +66,9 @@ public class TicketEmitterService {
             valueAccumulator.put(k, product);
         else {
             for (Map.Entry<String, Integer> a : product.entrySet()) {
-                productsInTable.merge(a.getKey(), a.getValue(), Integer::sum);
+                productsInTable.merge(a.getKey(), a.getValue(), (v1, v2) -> v1 + v2);
             }
         }
     }
 
 }
-
-

@@ -6,7 +6,7 @@ import org.springframework.kafka.annotation.EnableKafka;
 
 @EnableKafka
 @SpringBootApplication
-public class TicketEmitterApplication {
-    public static void main(String[] args) {SpringApplication.run(TicketEmitterApplication.class, args);
+public class TicketRequestApplication {
+    public static void main(String[] args) {SpringApplication.run(TicketRequestApplication.class, args);
     }
 }

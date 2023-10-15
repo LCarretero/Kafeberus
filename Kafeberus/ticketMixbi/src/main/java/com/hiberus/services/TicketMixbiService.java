@@ -1,6 +1,5 @@
 package com.hiberus.services;
 
-
 import com.hiberus.avro.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.streams.kstream.KStream;
@@ -22,13 +21,9 @@ public class TicketMixbiService {
         return (userStream, productStream) -> {
             KTable<TicketKey, UserInTicketValue> userKTable = createUserKTable(userStream);
             KTable<TicketKey, ProductsInTicketValue> productKTable = createProductKTable(productStream);
-            return userKTable.join(productKTable, (userInTicketValue, productsInTicketValue) -> FinalTicket.newBuilder()
-                            .setMapOfProducts(productsInTicketValue.getMapOfProducts())
-                            .setIdUser(userInTicketValue.getIdUser())
-                            .setRewarded(userInTicketValue.getRewarded())
-                            .setPrice(userInTicketValue.getRewarded() ? productsInTicketValue.getTotalPrice() - 5 : productsInTicketValue.getTotalPrice())
-                            .setTimeStamp(Instant.now().toString())
-                            .build())
+            return userKTable
+                    .join(productKTable,
+                            (userInTicketValue, productsInTicketValue) -> createFinalTicket(userInTicketValue, productsInTicketValue))
                     .toStream()
                     .peek((k, v) -> log.info("k{} ---- v{}", k, v));
         };
@@ -36,16 +31,28 @@ public class TicketMixbiService {
 
     private KTable<TicketKey, UserInTicketValue> createUserKTable(KStream<TableKey, UserInTicketValue> userStream) {
         return userStream.selectKey((k, v) -> TicketKey.newBuilder()
-                        .setIdTicket(v.getIdTicket())
-                        .build())
+                .setIdTicket(v.getIdTicket())
+                .build())
                 .toTable(Named.as("USER_TICKET"), Materialized.as("USER_TICKET_CHANGELOG"));
     }
 
-    private KTable<TicketKey, ProductsInTicketValue> createProductKTable(KStream<TableKey, ProductsInTicketValue> productStream) {
+    private KTable<TicketKey, ProductsInTicketValue> createProductKTable(
+            KStream<TableKey, ProductsInTicketValue> productStream) {
         return productStream.selectKey((k, v) -> TicketKey.newBuilder()
-                        .setIdTicket(v.getIdTicket())
-                        .build())
+                .setIdTicket(v.getIdTicket())
+                .build())
                 .toTable(Named.as("PRODUCTS_TICKET"), Materialized.as("PRODUCTS_TICKET_CHANGELOG"));
     }
 
+    private FinalTicket createFinalTicket(UserInTicketValue userInTicketValue,
+            ProductsInTicketValue productsInTicketValue) {
+        return FinalTicket.newBuilder()
+                .setMapOfProducts(productsInTicketValue.getMapOfProducts())
+                .setIdUser(userInTicketValue.getIdUser())
+                .setRewarded(userInTicketValue.getRewarded())
+                .setPrice(userInTicketValue.getRewarded() ? productsInTicketValue.getTotalPrice() - 5
+                        : productsInTicketValue.getTotalPrice())
+                .setTimeStamp(Instant.now().toString())
+                .build();
+    }
 }

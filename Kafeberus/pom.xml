@@ -13,7 +13,7 @@
         <module>users</module>
         <module>table</module>
         <module>ticketMixbi</module>
-        <module>ticketEmittion</module>
+        <module>ticketRequest</module>
         <module>ticketRecord</module>
     </modules>
     <parent>

@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
-
 @Service
 @Slf4j
 public class TicketRecordService {
@@ -35,17 +34,22 @@ public class TicketRecordService {
         log.info("Key:{} --- value:{}", ticketUuid, ticket.value());
     }
 
-//    @Bean
-//    private Consumer<KStream<TicketKey, FinalTicket>> process() {
-//        return record -> record
-//                .peek((k, v) -> {
-//                    Ticket ticketForDb = Ticket.builder()
-//                            .idTicket(UUID.fromString(k.getIdTicket()))
-//                            .timeStamp(Instant.now().toString())
-//                            .price(v.getPrice())
-//                            .build();
-//                    ticketRepository.save(ticketForDb);
-//                    log.info("Key:{} --- value:{}", k, v);
-//                });
-//    }
+//     @Bean
+//     public Consumer<KStream<TicketKey, FinalTicket>> process() {
+//         return record -> record
+//                 .filter((k, v) -> ticketRepository.findById(UUID.fromString(k.getIdTicket())).isEmpty())
+//                 .peek((k, v) -> {
+//                     try {
+//                         Ticket ticketForDb = Ticket.builder()
+//                                 .idTicket(UUID.fromString(k.getIdTicket()))
+//                                 .timeStamp(v.getTimeStamp())
+//                                 .price(v.getPrice())
+//                                 .build();
+//                         ticketRepository.save(ticketForDb);
+//                         log.info("Saved ticket with ID {} to the database", k.getIdTicket());
+//                     } catch (Exception e) {
+//                         log.error("Error saving ticket with ID {} to the database: {}", k.getIdTicket());
+//                   }
+//               });
+//   }
 }
