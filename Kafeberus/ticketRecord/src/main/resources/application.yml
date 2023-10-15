@@ -15,9 +15,9 @@ spring:
         specific.avro.reade: true
         schema.registry.url: http://localhost:8081
   datasource:
-    url: jdbc:postgresql://localhost:5333/postgresBills
-    username: Billberus
-    password: postgres123B
+    url: jdbc:postgresql://localhost:5333/postgresTickets
+    username: Ticketberus
+    password: postgres123T
     driver-class-name: org.postgresql.Driver
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
