@@ -40,6 +40,12 @@ public class ProductService {
         return ProductMapper.INSTANCE.mapToDTO(productFromDB.get());
     }
 
+    public Iterable<ProductDTO> getProducts() {
+        return productRepository.findAll().stream()
+                .map(ProductMapper.INSTANCE::mapToDTO)
+                .toList();
+    }
+
 
     //region PRIVATE_METHODS
     @KafkaListener(topics = "ticket-created")

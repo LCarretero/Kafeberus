@@ -24,8 +24,7 @@ public class AdminOfferService {
             throw new UnauthorizedException();
         if (!validName(offer.productName()))
             throw new BadRequestException();
-        OfferCRUDValue response = sendToTopic(verb.toString(), offer);
-        return OfferCRUDMapper.INSTANCE.mapToDTO(response);
+        return OfferCRUDMapper.INSTANCE.mapToDTO(sendToTopic(verb.toString(), offer));
     }
 
     private OfferCRUDValue sendToTopic(String verb, OfferDTO data) {

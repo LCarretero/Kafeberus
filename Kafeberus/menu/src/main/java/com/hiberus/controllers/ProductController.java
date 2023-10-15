@@ -27,4 +27,9 @@ public class ProductController {
             return ResponseEntity.badRequest().build();
         }
     }
+
+    @GetMapping("/getProducts")
+    public ResponseEntity<Iterable<ProductDTO>> getProducts() {
+        return ResponseEntity.ok(productService.getProducts());
+    }
 }

@@ -14,7 +14,7 @@ public class OrderController {
     private TableService tableService;
 
     @PostMapping("/please/createOrder")
-    public ResponseEntity<OrderDTO> makeAnOrder(@RequestParam(name = "idMesa") String idMesa, @RequestHeader(name = "Authorization") String userId, @RequestBody OrderDTO order) {
+    public ResponseEntity<OrderDTO> makeAnOrder(@RequestParam(name = "idMesa") int idMesa, @RequestHeader(name = "Authorization") String userId, @RequestBody OrderDTO order) {
         return ResponseEntity.ok(tableService.makeAnOrder(idMesa, userId, order));
     }
 }

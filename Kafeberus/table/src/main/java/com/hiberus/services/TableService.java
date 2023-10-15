@@ -17,12 +17,12 @@ public class TableService {
     @Autowired
     private KafkaTemplate<TableKey, OrderValue> kafkaTemplate;
 
-    public OrderDTO makeAnOrder(String idTable, String userId, OrderDTO orderValue) {
+    public OrderDTO makeAnOrder(int idTable, String userId, OrderDTO orderValue) {
         send(idTable, userId, orderValue);
         return orderValue;
     }
 
-    private void send(String idTable, String userId, OrderDTO orderValue) {
+    private void send(int idTable, String userId, OrderDTO orderValue) {
         TreeMap<String, Integer> products = new TreeMap<>();
         products.put(orderValue.productName(), orderValue.quantity());
 

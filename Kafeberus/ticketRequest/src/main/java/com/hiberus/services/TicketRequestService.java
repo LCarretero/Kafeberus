@@ -29,7 +29,7 @@ public class TicketRequestService {
     // @Autowired
     // private Aggregator aggregator;
 
-    private final Map<String, TreeMap<String, Integer>> valueAccumulator = new TreeMap<>();
+    private final Map<Integer, TreeMap<String, Integer>> valueAccumulator = new TreeMap<>();
 
     @Bean
     public Consumer<KStream<TableKey, OrderValue>> process() {
@@ -41,7 +41,7 @@ public class TicketRequestService {
                 });
     }
 
-    public TicketDTO makeTicket(String userId, String idTable) {
+    public TicketDTO makeTicket(String userId, int idTable) {
 
         TableKey key = TableKey.newBuilder().setIdTable(idTable).build();
         TicketValue value = TicketValue.newBuilder()
@@ -59,14 +59,14 @@ public class TicketRequestService {
         return new TicketDTO(idTable, userId);
     }
 
-    private void aggregate(String k, TreeMap<String, Integer> v) {
+    private void aggregate(Integer k, TreeMap<String, Integer> v) {
         TreeMap<String, Integer> product = new TreeMap<>(v);
         TreeMap<String, Integer> productsInTable = valueAccumulator.get(k);
         if (productsInTable == null)
             valueAccumulator.put(k, product);
         else {
             for (Map.Entry<String, Integer> a : product.entrySet()) {
-                productsInTable.merge(a.getKey(), a.getValue(), (v1, v2) -> v1 + v2);
+                productsInTable.merge(a.getKey(), a.getValue(), Integer::sum);
             }
         }
     }

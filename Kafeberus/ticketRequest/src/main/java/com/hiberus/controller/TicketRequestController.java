@@ -13,7 +13,7 @@ public class TicketRequestController {
     private TicketRequestService ticketRequestService;
 
     @PostMapping("/createTicket/{idTable}")
-    public ResponseEntity<TicketDTO> requestTicket(@RequestParam(name = "userId") String userId, @PathVariable(name = "idTable") String idTable) {
+    public ResponseEntity<TicketDTO> requestTicket(@RequestParam(name = "userId") String userId, @PathVariable(name = "idTable") int idTable) {
         TicketDTO ticket = ticketRequestService.makeTicket(userId, idTable);
         return ResponseEntity.ok(ticket);
     }

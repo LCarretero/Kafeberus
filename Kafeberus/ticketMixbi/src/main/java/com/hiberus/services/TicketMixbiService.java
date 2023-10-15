@@ -23,7 +23,7 @@ public class TicketMixbiService {
             KTable<TicketKey, ProductsInTicketValue> productKTable = createProductKTable(productStream);
             return userKTable
                     .join(productKTable,
-                            (userInTicketValue, productsInTicketValue) -> createFinalTicket(userInTicketValue, productsInTicketValue))
+                            this::createFinalTicket)
                     .toStream()
                     .peek((k, v) -> log.info("k{} ---- v{}", k, v));
         };

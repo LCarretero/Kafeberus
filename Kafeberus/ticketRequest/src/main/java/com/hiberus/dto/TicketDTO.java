@@ -1,4 +1,4 @@
 package com.hiberus.dto;
 
-public record TicketDTO(String idTable, String idUser) {
+public record TicketDTO(int idTable, String idUser) {
 }

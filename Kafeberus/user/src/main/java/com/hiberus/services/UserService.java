@@ -69,8 +69,6 @@ public class UserService {
         log.info("Key:{} --- value:{}", key,value);
     }
 
-
-    //region PRIVATE_METHODS
     private void createUser(String id, User user) {
         if (!validName(user.getName())) {
             log.info("User name not valid {}", user.getName());
@@ -124,6 +122,4 @@ public class UserService {
             return false;
         }
     }
-    //endregion
-
 }

@@ -5,7 +5,7 @@
   "fields": [
     {
       "name": "idTable",
-      "type": "string"
+      "type": "int"
     }
   ]
 }

@@ -9,5 +9,5 @@ import org.mapstruct.factory.Mappers;
 public interface OfferCRUDMapper {
      OfferCRUDMapper INSTANCE = Mappers.getMapper(OfferCRUDMapper.class);
 
-    OfferDTO mapToDTO(OfferCRUDValue offerCRUDValue);
+    OfferDTO mapToDTO(OfferCRUDValue offer);
 }

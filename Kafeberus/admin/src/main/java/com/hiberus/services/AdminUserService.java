@@ -28,8 +28,7 @@ public class AdminUserService {
         if (!isValidUser(user) && !verb.equals(DbbVerbs.DELETE))
             throw new BadRequestException();
 
-        UserCRUDValue response = sendToTopic(verb.toString().toUpperCase(), user);
-        return UserCRUDMapper.INSTANCE.mapToDto(response);
+        return UserCRUDMapper.INSTANCE.mapToDto(sendToTopic(verb.toString().toUpperCase(), user));
     }
 
     private UserCRUDValue sendToTopic(String verb, UserDTO data) {

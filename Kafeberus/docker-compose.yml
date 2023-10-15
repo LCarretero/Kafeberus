@@ -14,16 +14,16 @@ services:
     ports:
       - "5332:5432"
 
-  bills_db:
-    container_name: bills
+  tickets_db:
+    container_name: tickets
     image: postgres
     environment:
-      POSTGRES_USER: ${POSTGRES_BILLS}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD_BILLS}
-      POSTGRES_DB: postgresBills
+      POSTGRES_USER: ${POSTGRES_TICKETS}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD_TICKETS}
+      POSTGRES_DB: postgresTickets
       PGDATA: /data/bills
     volumes:
-      - /data/bills:/var/lib/postgresql/data
+      - /data/tickets:/var/lib/postgresql/data
     ports:
       - "5333:5432"
 
