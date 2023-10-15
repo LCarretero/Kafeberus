@@ -8,10 +8,6 @@
       "type": "string"
     },
     {
-      "name": "userName",
-      "type": "string"
-    },
-    {
       "name": "idTicket",
       "type": "string"
     },

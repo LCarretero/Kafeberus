@@ -31,20 +31,24 @@ spring:
           bindings:
             process-in-0:
               consumer:
+                applicationId: mixbi
                 keySerde: io.confluent.kafka.streams.serdes.avro.SpecificAvroSerde
                 valueSerde: io.confluent.kafka.streams.serdes.avro.SpecificAvroSerde
             process-in-1:
               consumer:
+                applicationId: mixbi
                 keySerde: io.confluent.kafka.streams.serdes.avro.SpecificAvroSerde
                 valueSerde: io.confluent.kafka.streams.serdes.avro.SpecificAvroSerde
             process-out-0:
-              consumer:
+              producer:
                 keySerde: io.confluent.kafka.streams.serdes.avro.SpecificAvroSerde
                 valueSerde: io.confluent.kafka.streams.serdes.avro.SpecificAvroSerde
 
           binder:
             brokers: "localhost:9092"
             configuration:
+              topology.optimization: all
+              state.dir: /tmp
               commit.interval.ms: 100
               session.timeout.ms: 10000
               max-poll-interval-ms: 60000

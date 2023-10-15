@@ -48,7 +48,7 @@ public class TicketEmitterService {
 
         TableKey key = TableKey.newBuilder().setIdTable(idTable).build();
         TicketValue value = TicketValue.newBuilder()
-                .setMapOfProducts(valueAccumulator.get(idTable))
+                .setMapOfProducts(valueAccumulator.get(idTable) == null ? new TreeMap<>() : valueAccumulator.get(idTable))
                 .setIdTicket(UUID.randomUUID().toString())
                 .setIdUser(userId)
                 .build();

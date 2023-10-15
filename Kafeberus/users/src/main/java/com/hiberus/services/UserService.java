@@ -55,7 +55,6 @@ public class UserService {
         UserInTicketValue value = UserInTicketValue.newBuilder()
                 .setIdUser(String.valueOf(userDb.getId()))
                 .setIdTicket(record.value().getIdTicket())
-                .setUserName(userDb.getName())
                 .setRewarded(false)
                 .build();
 

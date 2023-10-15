@@ -11,7 +11,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiFunction;
 
 @Service
@@ -22,19 +21,15 @@ public class TicketMixbiService {
     public BiFunction<KStream<TableKey, UserInTicketValue>, KStream<TableKey, ProductsInTicketValue>, KStream<TicketKey, FinalTicket>> process() {
         return (userStream, productStream) -> {
             KTable<TicketKey, UserInTicketValue> userKTable = createUserKTable(userStream);
-            AtomicReference<Integer> counter = new AtomicReference<>(0);
             KTable<TicketKey, ProductsInTicketValue> productKTable = createProductKTable(productStream);
-            userKTable.toStream().peek((k, v) -> log.info("[UserTable] Sending message with key: {} and value: {}", k, v));
-            productKTable.toStream().peek((k, v) -> log.info("[ProductTable] Sending message with key: {} and value: {}", k, v));
-            var macro = userKTable.leftJoin(productKTable, (userInTicketValue, productsInTicketValue) -> FinalTicket.newBuilder()
+            return userKTable.join(productKTable, (userInTicketValue, productsInTicketValue) -> FinalTicket.newBuilder()
                             .setMapOfProducts(productsInTicketValue.getMapOfProducts())
                             .setIdUser(userInTicketValue.getIdUser())
                             .setPrice(productsInTicketValue.getTotalPrice())
                             .setTimeStamp(Instant.now().toString())
                             .build())
-                    .toStream();
-            macro.peek((k, v) -> log.info("MACRO COUNTER "+counter.getAndSet(counter.get() + 1)));
-            return macro.peek((k, v) -> log.info("[joiner] Sending message with key: {} and value: {}", k, v));
+                    .toStream()
+                    .peek((k, v) -> log.info("k{} ---- v{}", k, v));
         };
     }
 
@@ -42,14 +37,14 @@ public class TicketMixbiService {
         return userStream.selectKey((k, v) -> TicketKey.newBuilder()
                         .setIdTicket(v.getIdTicket())
                         .build())
-                .toTable(Named.as("USER_TICKET"), Materialized.as("aa"));
+                .toTable(Named.as("USER_TICKET"), Materialized.as("USER_TICKET_CHANGELOG"));
     }
 
     private KTable<TicketKey, ProductsInTicketValue> createProductKTable(KStream<TableKey, ProductsInTicketValue> productStream) {
         return productStream.selectKey((k, v) -> TicketKey.newBuilder()
                         .setIdTicket(v.getIdTicket())
                         .build())
-                .toTable(Named.as("PRODUCTS_TICKET"), Materialized.as("bb"));
+                .toTable(Named.as("PRODUCTS_TICKET"), Materialized.as("PRODUCTS_TICKET_CHANGELOG"));
     }
 
 }

@@ -5,7 +5,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.util.UUID;
 
 @Entity
@@ -16,7 +18,6 @@ import java.util.UUID;
 @Builder
 public class Ticket {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID idTicket;
     private UUID userId;
     private double price;

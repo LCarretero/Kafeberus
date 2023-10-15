@@ -4,7 +4,16 @@ server:
 spring:
   application:
     name: ticketRecord
-
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: ticket-record
+      auto-offset-reset: earliest
+      key-deserializer: io.confluent.kafka.streams.serdes.avro.SpecificAvroDeserializer
+      value-deserializer: io.confluent.kafka.streams.serdes.avro.SpecificAvroDeserializer
+      properties:
+        specific.avro.reade: true
+        schema.registry.url: http://localhost:8081
   datasource:
     url: jdbc:postgresql://localhost:5333/postgresBills
     username: Billberus
@@ -14,31 +23,6 @@ spring:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
       ddl-auto: create
-
-  cloud:
-    function:
-      definition: process
-    stream:
-      bindings:
-        process-in-0:
-          destination: ticket
-
-      kafka:
-        binder:
-          brokers: "localhost:9092"
-          configuration:
-            commit.interval.ms: 100
-            session.timeout.ms: 10000
-            max-poll-interval-ms: 60000
-            auto.register.schemas: true
-            default.key.serde: io.confluent.kafka.streams.serdes.avro.SpecificAvroSerde
-            default.value.serde: io.confluent.kafka.streams.serdes.avro.SpecificAvroSerde
-        streams:
-          bindings:
-            process-in-0:
-              consumer:
-                keySerde: io.confluent.kafka.streams.serdes.avro.SpecificAvroSerde
-                valueSerde: io.confluent.kafka.streams.serdes.avro.SpecificAvroSerde
 
   config:
     activate:
