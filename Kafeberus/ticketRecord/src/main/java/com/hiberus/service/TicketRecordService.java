@@ -27,10 +27,25 @@ public class TicketRecordService {
         Ticket ticketForDb = Ticket.builder()
                 .idTicket(ticketUuid)
                 .timeStamp(ticket.value().getTimeStamp())
+                .rewarded(ticket.value().getRewarded())
                 .userId(UUID.fromString(ticket.value().getIdUser()))
                 .price(ticket.value().getPrice())
                 .build();
         ticketRepository.save(ticketForDb);
         log.info("Key:{} --- value:{}", ticketUuid, ticket.value());
     }
+
+//    @Bean
+//    private Consumer<KStream<TicketKey, FinalTicket>> process() {
+//        return record -> record
+//                .peek((k, v) -> {
+//                    Ticket ticketForDb = Ticket.builder()
+//                            .idTicket(UUID.fromString(k.getIdTicket()))
+//                            .timeStamp(Instant.now().toString())
+//                            .price(v.getPrice())
+//                            .build();
+//                    ticketRepository.save(ticketForDb);
+//                    log.info("Key:{} --- value:{}", k, v);
+//                });
+//    }
 }

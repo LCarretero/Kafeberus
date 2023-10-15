@@ -19,6 +19,7 @@ import java.util.UUID;
 public class Ticket {
     @Id
     private UUID idTicket;
+    private boolean rewarded;
     private UUID userId;
     private double price;
     private String timeStamp;

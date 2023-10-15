@@ -15,6 +15,10 @@
       }
     },
     {
+      "name": "rewarded",
+      "type": "boolean"
+    },
+    {
       "name": "price",
       "type": "double"
     },
