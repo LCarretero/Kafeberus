@@ -1,6 +1,6 @@
 # Kafeberus
 
-This is a Java Maven project for a restaurant management system.
+This is a Java Maven project for a restaurant management system. [Diagram](#diagram) of the project
 
 ## Getting Started
 
@@ -16,11 +16,12 @@ This will compile the project and generate the necessary artifacts.
 
 This project is divided into several modules, each of which provides a specific functionality:
 
-* `admin`: Provides a REST API for managing products, offers, and users.
-* `menu`: Provides a web interface for customers to view the restaurant's menu and place orders.
-* `table`: Provides a REST API for managing tables and orders.
-* `ticket-request`: Provides a Kafka consumer for processing ticket requests.
-* `ticket-request`: Provides a Kafka consumer for processing ticket requests.
+* [`admin`](Kafeberus/admin): Provides a REST API for managing products, offers, and users.
+* [`menu`](kafeberus/menu): Provides a web interface for customers to view the restaurant's menu and place orders.
+* [`table`](kafeberus/table): Provides a REST API for managing orders from a table.
+* [`ticketMixbi`](kafeberus/ticketMixbi):Provides a Kafka consumer and producer who joins the information from products and user giving the body for the final ticket.
+* [`ticketRequest`](kafeberus/ticketRequest): Provides a Kafka consumer for processing ticket requests.
+* [`ticketRecord` ](kafeberus/ticketRecord):Provides a Kafka consumer for saving tickets in the db.
 
 ## Services
 
@@ -78,3 +79,7 @@ Save the information of the ticket in the db.
 
 ## User
 Manages actions performed on users and gives information of a user like his points.
+
+
+# Diagram
+![diagram](Kafeberus/diagrama.svg)
