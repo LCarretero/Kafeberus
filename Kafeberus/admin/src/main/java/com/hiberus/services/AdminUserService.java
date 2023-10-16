@@ -1,11 +1,11 @@
 package com.hiberus.services;
 
-import com.hiberus.exception.BadRequestException;
-import com.hiberus.exception.UnauthorizedException;
 import com.hiberus.avro.CRUDKey;
 import com.hiberus.avro.UserCRUDValue;
 import com.hiberus.dto.UserDTO;
 import com.hiberus.enums.DbbVerbs;
+import com.hiberus.exception.BadRequestException;
+import com.hiberus.exception.UnauthorizedException;
 import com.hiberus.mapper.UserCRUDMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -47,7 +47,7 @@ public class AdminUserService {
     }
 
     private boolean validName(String name) {
-        return name != null && !name.isEmpty() && !name.matches(".*\\d.*");
+        return name != null && !name.isEmpty() && !name.matches("\\D{1,100}");
     }
 
     private boolean isAuthorized(String authorization) {

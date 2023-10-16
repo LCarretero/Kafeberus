@@ -39,7 +39,7 @@ public class AdminOfferService {
     }
 
     private boolean validName(String name) {
-        return name != null && !name.isEmpty() && !name.matches(".*\\d.*");
+        return name != null && !name.isEmpty() &&!name.matches("\\D{1,100}");
     }
 
     private boolean authorized(String authorization) {
