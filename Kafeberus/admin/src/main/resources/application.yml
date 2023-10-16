@@ -14,5 +14,8 @@ spring:
   config:
     activate:
       on-profile: default
-
+springdoc:
+  swagger-ui:
+    disable-swagger-default-url: true
+    path: /api-docs.html
 KEYPASS: KafkaGang
