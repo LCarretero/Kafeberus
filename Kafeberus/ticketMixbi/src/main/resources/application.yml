@@ -48,11 +48,12 @@ spring:
             brokers: "localhost:9092"
             configuration:
               topology.optimization: all
-              state.dir: /tmp
+              state.dir: /tmpdc
               commit.interval.ms: 100
               session.timeout.ms: 10000
               max-poll-interval-ms: 60000
               schema.registry.url: http://localhost:8081
+              statestore.cache.max.bytes: 200
               auto.register.schemas: true
               default.key.serde: io.confluent.kafka.streams.serdes.avro.SpecificAvroSerde
               default.value.serde: io.confluent.kafka.streams.serdes.avro.SpecificAvroSerde

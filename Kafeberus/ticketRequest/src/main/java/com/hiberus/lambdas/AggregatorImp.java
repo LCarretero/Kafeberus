@@ -9,14 +9,14 @@ import java.util.TreeMap;
 import java.util.UUID;
 
 @Component
-public class Aggregator implements org.apache.kafka.streams.kstream.Aggregator<TableKey, OrderValue, TicketValue> {
+public class AggregatorImp implements org.apache.kafka.streams.kstream.Aggregator<TableKey, OrderValue, TicketValue> {
     @Override
     public TicketValue apply(TableKey tableKey, OrderValue orderValue, TicketValue ticketValue) {
         TreeMap<String, Integer> mergedMap = new TreeMap<>(ticketValue.getMapOfProducts());
 
-        orderValue.getMapOfProducts().forEach((product, quantity) -> {
-            mergedMap.merge(product, quantity, Integer::sum);
-        });
+        orderValue.getMapOfProducts().forEach((product, quantity) ->
+                mergedMap.merge(product, quantity, Integer::sum));
+
 
         ticketValue = TicketValue.newBuilder().setIdTicket(UUID.randomUUID().toString())
                 .setIdUser(orderValue.getIdUser())

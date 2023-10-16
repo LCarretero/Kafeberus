@@ -1,7 +1,7 @@
 package com.hiberus.services;
 
-import com.hiberus.Exception.BadRequestException;
-import com.hiberus.Exception.UnauthorizedException;
+import com.hiberus.exception.BadRequestException;
+import com.hiberus.exception.UnauthorizedException;
 import com.hiberus.avro.CRUDKey;
 import com.hiberus.avro.UserCRUDValue;
 import com.hiberus.dto.UserDTO;
@@ -15,15 +15,16 @@ import org.springframework.stereotype.Service;
 import java.util.UUID;
 
 @Service
+
 public class AdminUserService {
     @Autowired
     private KafkaTemplate<CRUDKey, UserCRUDValue> kafkaTemplate;
     @Value("${KEYPASS}")
-    private String KEYPASS;
-    private final int MAX_POINTS = 5;
+    private String keyPass;
+    private static final int MAX_POINTS = 5;
 
-    public UserDTO crudOperation(String Authorization, DbbVerbs verb, UserDTO user) throws UnauthorizedException, BadRequestException {
-        if (!isAuthorized(Authorization))
+    public UserDTO crudOperation(String authorization, DbbVerbs verb, UserDTO user) throws UnauthorizedException, BadRequestException {
+        if (!isAuthorized(authorization))
             throw new UnauthorizedException();
         if (!isValidUser(user) && !verb.equals(DbbVerbs.DELETE))
             throw new BadRequestException();
@@ -49,7 +50,7 @@ public class AdminUserService {
         return name != null && !name.isEmpty() && !name.matches(".*\\d.*");
     }
 
-    private boolean isAuthorized(String Authorization) {
-        return KEYPASS.equals(Authorization);
+    private boolean isAuthorized(String authorization) {
+        return keyPass.equals(authorization);
     }
 }

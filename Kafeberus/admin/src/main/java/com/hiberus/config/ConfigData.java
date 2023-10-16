@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration(proxyBeanMethods = false)
-public class configData {
+public class ConfigData {
     private static final String TITLE = "Pizzas-read API";
     private static final String DESCRIPTION = "API Pizzas for reading from the BD";
     private static final String BASE_PACKAGE = "com.hiberus.controllers";

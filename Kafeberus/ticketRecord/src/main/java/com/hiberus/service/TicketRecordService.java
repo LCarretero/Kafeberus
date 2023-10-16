@@ -47,7 +47,7 @@ public class TicketRecordService {
 //                                 .build();
 //                         ticketRepository.save(ticketForDb);
 //                         log.info("Saved ticket with ID {} to the database", k.getIdTicket());
-//                     } catch (Exception e) {
+//                     } catch (exception e) {
 //                         log.error("Error saving ticket with ID {} to the database: {}", k.getIdTicket());
 //                   }
 //               });

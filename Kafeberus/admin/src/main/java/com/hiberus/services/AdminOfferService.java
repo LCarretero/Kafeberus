@@ -1,7 +1,7 @@
 package com.hiberus.services;
 
-import com.hiberus.Exception.BadRequestException;
-import com.hiberus.Exception.UnauthorizedException;
+import com.hiberus.exception.BadRequestException;
+import com.hiberus.exception.UnauthorizedException;
 import com.hiberus.avro.CRUDKey;
 import com.hiberus.avro.OfferCRUDValue;
 import com.hiberus.dto.OfferDTO;
@@ -17,10 +17,10 @@ public class AdminOfferService {
     @Autowired
     private KafkaTemplate<CRUDKey, OfferCRUDValue> kafkaTemplate;
     @Value("${KEYPASS}")
-    private String KEYPASS;
+    private String keyPass;
 
-    public OfferDTO crudOperation(String Authorization, OfferDTO offer, DbbVerbs verb) throws UnauthorizedException, BadRequestException {
-        if (!authorized(Authorization))
+    public OfferDTO crudOperation(String authorization, OfferDTO offer, DbbVerbs verb) throws UnauthorizedException, BadRequestException {
+        if (!authorized(authorization))
             throw new UnauthorizedException();
         if (!validName(offer.productName()))
             throw new BadRequestException();
@@ -42,7 +42,7 @@ public class AdminOfferService {
         return name != null && !name.isEmpty() && !name.matches(".*\\d.*");
     }
 
-    private boolean authorized(String Authorization) {
-        return KEYPASS.equals(Authorization);
+    private boolean authorized(String authorization) {
+        return keyPass.equals(authorization);
     }
 }

@@ -24,10 +24,10 @@ public class TicketRequestService {
     private KafkaTemplate<TableKey, TicketValue> kafkaTemplate;
 
     // @Autowired
-    // private Initializer initializer;
+    // private InitializerImp initializer;
 
     // @Autowired
-    // private Aggregator aggregator;
+    // private AggregatorImp aggregator;
 
     private final Map<Integer, TreeMap<String, Integer>> valueAccumulator = new TreeMap<>();
 

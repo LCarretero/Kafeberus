@@ -24,25 +24,25 @@ public class UserService {
 
     @Autowired
     KafkaTemplate<TableKey, UserInTicketValue> kafkaTemplate;
-    private final int PROMO = 0;
-    private final int MAX_FIDELITY = 5;
+    private static final int PROMO = 0;
+    private static final int FIDELITY = 5;
 
     @KafkaListener(topics = "crud-user")
-    private void crudConsumer(ConsumerRecord<CRUDKey, UserCRUDValue> record) throws CrudBadVerbException {
+    private void crudConsumer(ConsumerRecord<CRUDKey, UserCRUDValue> ticketFromTopic) throws CrudBadVerbException {
 
-        String verb = record.value().getVerb();
-        User user = UserMapper.INSTANCE.mapToModel(record.value());
+        String verb = ticketFromTopic.value().getVerb();
+        User user = UserMapper.INSTANCE.mapToModel(ticketFromTopic.value());
         switch (verb) {
-            case "POST" -> createUser(record.key().getId(), user);
-            case "PUT" -> updateUser(record.key().getId(), user);
-            case "DELETE" -> deleteUser(record.key().getId());
+            case "POST" -> createUser(ticketFromTopic.key().getId(), user);
+            case "PUT" -> updateUser(ticketFromTopic.key().getId(), user);
+            case "DELETE" -> deleteUser(ticketFromTopic.key().getId());
             default -> throw new CrudBadVerbException();
         }
     }
 
     @KafkaListener(topics = "ticket-created")
-    private void userInTicket(ConsumerRecord<TableKey, TicketValue> record) {
-        String userId = record.value().getIdUser();
+    private void userInTicket(ConsumerRecord<TableKey, TicketValue> ticketFromTopic) {
+        String userId = ticketFromTopic.value().getIdUser();
         if (!validId(userId))
             return;
         Optional<User> userFromDb = userRepository.findById(UUID.fromString(userId));
@@ -50,15 +50,15 @@ public class UserService {
             return;
         User userDb = userFromDb.get();
         userDb.setFidelity(userDb.getFidelity() + 1);
-        TableKey key = record.key();
+        TableKey key = ticketFromTopic.key();
 
         UserInTicketValue value = UserInTicketValue.newBuilder()
                 .setIdUser(String.valueOf(userDb.getId()))
-                .setIdTicket(record.value().getIdTicket())
+                .setIdTicket(ticketFromTopic.value().getIdTicket())
                 .setRewarded(false)
                 .build();
 
-        if (userFromDb.get().getFidelity() >= MAX_FIDELITY) {
+        if (userFromDb.get().getFidelity() >= FIDELITY) {
             value.setRewarded(true);
             userDb.setFidelity(0);
         }
@@ -66,7 +66,7 @@ public class UserService {
         userRepository.save(userDb);
 
         kafkaTemplate.send("user-in-ticket", key, value);
-        log.info("Key:{} --- value:{}", key,value);
+        log.info("Key:{} --- value:{}", key, value);
     }
 
     private void createUser(String id, User user) {

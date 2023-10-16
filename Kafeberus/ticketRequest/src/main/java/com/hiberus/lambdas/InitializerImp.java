@@ -7,7 +7,7 @@ import java.util.TreeMap;
 import java.util.UUID;
 
 @Component
-public class Initializer implements org.apache.kafka.streams.kstream.Initializer<TicketValue> {
+public class InitializerImp implements org.apache.kafka.streams.kstream.Initializer<TicketValue> {
     @Override
     public TicketValue apply() {
         return TicketValue.newBuilder()

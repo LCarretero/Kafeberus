@@ -1,4 +1,4 @@
-package com.hiberus.Exception;
+package com.hiberus.exception;
 
 public class BadRequestException extends Exception {
     public BadRequestException() {

@@ -1,7 +1,7 @@
 package com.hiberus.controllers;
 
-import com.hiberus.Exception.BadRequestException;
-import com.hiberus.Exception.UnauthorizedException;
+import com.hiberus.exception.BadRequestException;
+import com.hiberus.exception.UnauthorizedException;
 import com.hiberus.dto.UserDTO;
 import com.hiberus.enums.DbbVerbs;
 import com.hiberus.services.AdminUserService;
@@ -31,9 +31,9 @@ public class AdminUserController {
                     @ApiResponse(responseCode = "401", description = "Unauthorized")
             }
     )
-    public ResponseEntity<UserDTO> createUser(@RequestHeader(name = "Authorization") String Authorization, @RequestBody UserDTO user) {
+    public ResponseEntity<UserDTO> createUser(@RequestHeader(name = "Authorization") String authorization, @RequestBody UserDTO user) {
         try {
-            return ResponseEntity.ok(adminUserService.crudOperation(Authorization, DbbVerbs.POST, user));
+            return ResponseEntity.ok(adminUserService.crudOperation(authorization, DbbVerbs.POST, user));
         } catch (UnauthorizedException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         } catch (BadRequestException e) {
@@ -52,9 +52,9 @@ public class AdminUserController {
                     @ApiResponse(responseCode = "401", description = "Unauthorized")
             }
     )
-    public ResponseEntity<UserDTO> deleteUser(@RequestHeader(name = "Authorization") String Authorization, @RequestParam(name = "id") String id) {
+    public ResponseEntity<UserDTO> deleteUser(@RequestHeader(name = "Authorization") String authorization, @RequestParam(name = "id") String id) {
         try {
-            return ResponseEntity.ok(adminUserService.crudOperation(Authorization, DbbVerbs.DELETE, new UserDTO(id, "", 0)));
+            return ResponseEntity.ok(adminUserService.crudOperation(authorization, DbbVerbs.DELETE, new UserDTO(id, "", 0)));
         } catch (UnauthorizedException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         } catch (BadRequestException e) {
@@ -72,9 +72,9 @@ public class AdminUserController {
                     @ApiResponse(responseCode = "401", description = "Unauthorized")
             }
     )
-    public ResponseEntity<UserDTO> updateUser(@RequestHeader(name = "Authorization") String Authorization, @RequestParam(name = "id") String id, @RequestBody UserDTO user) {
+    public ResponseEntity<UserDTO> updateUser(@RequestHeader(name = "Authorization") String authorization, @RequestParam(name = "id") String id, @RequestBody UserDTO user) {
         try {
-            return ResponseEntity.ok(adminUserService.crudOperation(Authorization, DbbVerbs.PUT, new UserDTO(id, user.name(), user.points())));
+            return ResponseEntity.ok(adminUserService.crudOperation(authorization, DbbVerbs.PUT, new UserDTO(id, user.name(), user.points())));
         } catch (UnauthorizedException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         } catch (BadRequestException e) {
