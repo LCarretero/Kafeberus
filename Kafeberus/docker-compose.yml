@@ -118,6 +118,25 @@ services:
       - kafka
     restart: always
 
+  sonarqube:
+    image: sonarqube
+    restart: unless-stopped
+    environment:
+      - SONARQUBE_JDBC_USERNAME=sonarqube
+      - SONARQUBE_JDBC_PASSWORD=sonarpass
+      - SONARQUBE_JDBC_URL=jdbc:postgresql://db:5432/sonarqube
+
+    ports:
+      - "9000:9000"
+      - "9992:9992"
+
+  elk:
+    image: sebp/elk
+    ports:
+      - "5601:5601"
+      - "9200:9200"
+      - "5044:5044"
+
 networks:
   default:
     name: kafeberus
