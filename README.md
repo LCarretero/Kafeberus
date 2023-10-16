@@ -8,7 +8,7 @@ To get started with this project, you will need to have Maven installed on your 
 
 Once you have Maven installed, you can build the project by running the following command:
 
-``mvn clean install -DskiptTests``
+``mvn clean install -DskipTests``
 
 This will compile the project and generate the necessary artifacts.
 
@@ -19,6 +19,7 @@ This project is divided into several modules, each of which provides a specific 
 * `admin`: Provides a REST API for managing products, offers, and users.
 * `menu`: Provides a web interface for customers to view the restaurant's menu and place orders.
 * `table`: Provides a REST API for managing tables and orders.
+* `ticket-request`: Provides a Kafka consumer for processing ticket requests.
 * `ticket-request`: Provides a Kafka consumer for processing ticket requests.
 
 ## Services
